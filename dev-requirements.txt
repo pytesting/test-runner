@@ -1,0 +1,7 @@
+lxml
+coverage
+pytest
+pytest-cov
+pypandoc
+flake8
+-r ./requirements.txt
