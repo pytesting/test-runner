@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
-import subprocess
-import virtualenv
 import shutil
+import subprocess
 import tempfile
+import virtualenv
 from typing import Union, List, Tuple
 
 from testrunner.utils.preconditions import Preconditions
