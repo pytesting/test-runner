@@ -45,6 +45,27 @@ class VirtualEnvironmentTest(unittest.TestCase):
         self.assertTrue(os.path.isdir(env_dir))
         self.assertEqual(self._env_name, env_dir[-len(self._env_name):])
 
+    def test_run_commands(self):
+        self._venv.add_package_for_installation('benchexec')
+        out, err = self._venv.run_commands([''])
+        self.assertIsNone(err)
+        self.assertTrue('Successfully installed benchexec' in str(out))
+
+    def test_add_package_for_installation(self):
+        package = 'test-foo'
+        self._venv.add_package_for_installation(package)
+        packages = self._venv._packages
+        self.assertTrue(len(packages) == 1)
+        self.assertEqual(package, packages[0])
+
+    def test_add_packages_for_installation(self):
+        package = ['test-foo', 'test-bar']
+        self._venv.add_packages_for_installation(package)
+        packages = self._venv._packages
+        self.assertTrue(len(packages) == 2)
+        self.assertEqual(package[0], packages[0])
+        self.assertEqual(package[1], packages[1])
+
 
 if __name__ == '__main__':
     unittest.main()
