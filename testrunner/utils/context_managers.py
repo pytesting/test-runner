@@ -20,6 +20,8 @@ import shutil
 import tempfile
 from typing import Union, Generator, Any, Callable
 
+from testrunner.utils.virtual_environment import VirtualEnvironment
+
 
 @contextlib.contextmanager
 def cd(new_dir: Union[bytes, str, os.PathLike],
@@ -57,3 +59,10 @@ def tempdir() -> Generator[Union[bytes, str], Any, None]:
 
     with cd(dir_path, cleanup):
         yield dir_path
+
+
+@contextlib.contextmanager
+def virtualenv(env_name: str) -> Generator[VirtualEnvironment, Any, None]:
+    venv = VirtualEnvironment(env_name)
+    yield venv
+    venv.cleanup()

@@ -19,7 +19,7 @@ import shutil
 import tempfile
 import unittest
 
-from testrunner.utils.context_managers import tempdir, cd
+from testrunner.utils.context_managers import tempdir, cd, virtualenv
 
 
 class ContextManagerTest(unittest.TestCase):
@@ -50,6 +50,11 @@ class ContextManagerTest(unittest.TestCase):
             self.assertEqual(tmp_dir, os.getcwd())
         self.assertEqual(cwd, os.getcwd())
         self.assertFalse(os.path.exists(tmp_dir))
+
+    def test_virtualenv(self):
+        with virtualenv('test') as venv:
+            self.assertTrue(os.path.isdir(venv.get_env_dir()))
+        self.assertFalse(os.path.isdir(venv.get_env_dir()))
 
 
 if __name__ == '__main__':
