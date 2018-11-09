@@ -11,7 +11,7 @@ install:
   - pip install -r requirements.txt
   - sudo apt-get install pandoc
 before_script:
-  - "flake8 --ignore=F401 ."
+  - "flake8 ."
 script:
   - py.test --cov=testrunner tests/
 after_success:
