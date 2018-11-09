@@ -23,7 +23,6 @@ from testrunner.utils.context_managers import tempdir, cd, virtualenv
 
 
 class ContextManagerTest(unittest.TestCase):
-
     def test_temp_dir(self):
         with tempdir() as temp_dir:
             self.assertTrue(os.path.isdir(temp_dir))
@@ -52,10 +51,10 @@ class ContextManagerTest(unittest.TestCase):
         self.assertFalse(os.path.exists(tmp_dir))
 
     def test_virtualenv(self):
-        with virtualenv('test') as venv:
+        with virtualenv("test") as venv:
             self.assertTrue(os.path.isdir(venv.get_env_dir()))
         self.assertFalse(os.path.isdir(venv.get_env_dir()))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

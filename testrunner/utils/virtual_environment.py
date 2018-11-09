@@ -41,7 +41,8 @@ class VirtualEnvironment(object):
         """
         Preconditions.check_argument(
             len(env_name) > 0,
-            'Cannot create an virtual environment without a name!')
+            "Cannot create an virtual environment without a name!",
+        )
         self._env_name = env_name
         self._packages = []
 
@@ -90,13 +91,15 @@ class VirtualEnvironment(object):
         :return: A tuple of output and error outputs of the process
         """
         command_list = [
-            'source {}'.format(os.path.join(self._env_dir, 'bin', 'activate')),
-            'python -V']
+            "source {}".format(os.path.join(self._env_dir, "bin", "activate")),
+            "python -V",
+        ]
         for package in self._packages:
-            command_list.append('pip install {}'.format(package))
+            command_list.append("pip install {}".format(package))
         command_list.extend(commands)
-        cmd = ';'.join(command_list)
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE, shell=True)
+        cmd = ";".join(command_list)
+        process = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
+        )
         out, err = process.communicate()
-        return out.decode('utf-8'), err.decode('utf-8')
+        return out.decode("utf-8"), err.decode("utf-8")

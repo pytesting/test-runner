@@ -23,10 +23,9 @@ from testrunner.utils.context_managers import virtualenv
 
 
 class PyTestRunner(AbstractRunner):
-
-    def __init__(self,
-                 project_name: str,
-                 path: Union[bytes, str, os.PathLike]) -> None:
+    def __init__(
+        self, project_name: str, path: Union[bytes, str, os.PathLike]
+    ) -> None:
         super().__init__(project_name, path)
 
     def run(self) -> Optional[Tuple[str, str]]:
@@ -37,7 +36,7 @@ class PyTestRunner(AbstractRunner):
             os.chdir(self._path)
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
-            env.add_package_for_installation('pytest')
-            out, err = env.run_commands(['pytest'])
+            env.add_package_for_installation("pytest")
+            out, err = env.run_commands(["pytest"])
             os.chdir(old_dir)
             return out, err

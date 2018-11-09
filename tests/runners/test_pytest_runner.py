@@ -23,21 +23,20 @@ from testrunner.runners.pytest_runner import PyTestRunner
 
 
 class PyTestRunnerTest(unittest.TestCase):
-
     def setUp(self):
         self._tmp_dir = tempfile.mkdtemp()
-        url = 'https://github.com/audreyr/standardjson'
+        url = "https://github.com/audreyr/standardjson"
         self._repo = Repo.clone_from(url, self._tmp_dir)
-        self._runner = PyTestRunner('standardjson', self._tmp_dir)
+        self._runner = PyTestRunner("standardjson", self._tmp_dir)
 
     def tearDown(self):
         shutil.rmtree(self._tmp_dir)
 
     def test_run(self):
         out, err = self._runner.run()
-        self.assertFalse('error' in err.lower())
-        self.assertTrue('passed' in out.lower())
+        self.assertFalse("error" in err.lower())
+        self.assertTrue("passed" in out.lower())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

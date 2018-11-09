@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import contextlib
+
 # This file is part of test-runner.
 #
 # test-runner is free software: you can redistribute it and/or modify
@@ -24,9 +25,10 @@ from testrunner.utils.virtual_environment import VirtualEnvironment
 
 
 @contextlib.contextmanager
-def cd(new_dir: Union[bytes, str, os.PathLike],
-       cleanup: Callable[[], bool] = lambda: True) \
-        -> Generator[Any, Any, None]:
+def cd(
+    new_dir: Union[bytes, str, os.PathLike],
+    cleanup: Callable[[], bool] = lambda: True,
+) -> Generator[Any, Any, None]:
     """
     A context that changes directories
 

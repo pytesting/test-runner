@@ -22,15 +22,13 @@ from testrunner.utils.preconditions import Preconditions
 
 
 class AbstractRunner(metaclass=ABCMeta):
-
-    def __init__(self,
-                 project_name: str,
-                 path: Union[bytes, str, os.PathLike]) -> \
-            None:
+    def __init__(
+        self, project_name: str, path: Union[bytes, str, os.PathLike]
+    ) -> None:
         Preconditions.check_argument(
-            len(project_name) > 0, 'Project name must not be empty!')
-        Preconditions.check_argument(
-            len(path) > 0, 'Path must not be empty!')
+            len(project_name) > 0, "Project name must not be empty!"
+        )
+        Preconditions.check_argument(len(path) > 0, "Path must not be empty!")
         self._project_name = project_name
         self._path = path
 
@@ -40,19 +38,25 @@ class AbstractRunner(metaclass=ABCMeta):
 
     def _extract_necessary_packages(self) -> List[str]:
         packages = []
-        file_names = ['requirements.txt', 'dev-requirements.txt',
-                      'test-requirements.txt', 'requirements-dev.txt',
-                      'requirements-test.txt']
+        file_names = [
+            "requirements.txt",
+            "dev-requirements.txt",
+            "test-requirements.txt",
+            "requirements-dev.txt",
+            "requirements-test.txt",
+        ]
         for file_name in file_names:
             packages.extend(
-                self._extract_packages(os.path.join(self._path, file_name)))
+                self._extract_packages(os.path.join(self._path, file_name))
+            )
         return packages
 
     @staticmethod
     def _extract_packages(requirements_file):
         packages = []
-        if os.path.exists(requirements_file) \
-                and os.path.isfile(requirements_file):
+        if os.path.exists(requirements_file) and os.path.isfile(
+            requirements_file
+        ):
             with open(requirements_file) as f:
                 for line in f.readlines():
                     packages.append(line)

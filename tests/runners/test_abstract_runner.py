@@ -25,17 +25,16 @@ from testrunner.utils.preconditions import IllegalArgumentException
 
 
 class AbstractRunnerTest(unittest.TestCase):
-
     def setUp(self):
         self._tmp_dir = tempfile.mkdtemp()
         files = {
-            'requirements.txt': 'foo',
-            'dev-requirements.txt': 'bar',
-            'test-requirements.txt': 'baz',
-            'requirements-test.txt': 'foobar'
+            "requirements.txt": "foo",
+            "dev-requirements.txt": "bar",
+            "test-requirements.txt": "baz",
+            "requirements-test.txt": "foobar",
         }
         for k, v in files.items():
-            with open(os.path.join(self._tmp_dir, k), 'w') as f:
+            with open(os.path.join(self._tmp_dir, k), "w") as f:
                 f.write(v)
 
     def tearDown(self):
@@ -44,37 +43,33 @@ class AbstractRunnerTest(unittest.TestCase):
     def test_cannot_instantiate(self):
         """Showing we normally cannot instantiate an abstract class"""
         with self.assertRaises(TypeError):
-            AbstractRunner('foo', 'bar')
+            AbstractRunner("foo", "bar")
 
-    @patch.multiple(AbstractRunner,
-                    __abstractmethods__=set())
+    @patch.multiple(AbstractRunner, __abstractmethods__=set())
     def test_empty_project_name(self):
         with self.assertRaises(IllegalArgumentException) as context:
-            AbstractRunner('', 'bar')
+            AbstractRunner("", "bar")
+        self.assertTrue(isinstance(context.exception, IllegalArgumentException))
         self.assertTrue(
-            isinstance(context.exception, IllegalArgumentException))
-        self.assertTrue(
-            'Project name must not be empty!' in str(context.exception))
+            "Project name must not be empty!" in str(context.exception)
+        )
 
-    @patch.multiple(AbstractRunner,
-                    __abstractmethods__=set())
+    @patch.multiple(AbstractRunner, __abstractmethods__=set())
     def test_empty_path(self):
         with self.assertRaises(IllegalArgumentException) as context:
-            AbstractRunner('foo', '')
-        self.assertTrue(
-            isinstance(context.exception, IllegalArgumentException))
-        self.assertTrue(
-            'Path must not be empty!' in str(context.exception))
+            AbstractRunner("foo", "")
+        self.assertTrue(isinstance(context.exception, IllegalArgumentException))
+        self.assertTrue("Path must not be empty!" in str(context.exception))
 
     @patch.multiple(AbstractRunner, __abstractmethods__=set())
     def test_extract_necessary_packages(self):
-        runner = AbstractRunner('foo', self._tmp_dir)
+        runner = AbstractRunner("foo", self._tmp_dir)
         result = runner._extract_necessary_packages()
-        self.assertTrue('foo' in result)
-        self.assertTrue('bar' in result)
-        self.assertTrue('baz' in result)
-        self.assertTrue('foobar' in result)
+        self.assertTrue("foo" in result)
+        self.assertTrue("bar" in result)
+        self.assertTrue("baz" in result)
+        self.assertTrue("foobar" in result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

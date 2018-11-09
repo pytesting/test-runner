@@ -22,14 +22,13 @@ from testrunner.utils.context_managers import virtualenv
 
 
 class SetupPyRunner(AbstractRunner):
-
-    def __init__(self,
-                 project_name: str,
-                 path: Union[bytes, str, os.PathLike]) -> None:
+    def __init__(
+        self, project_name: str, path: Union[bytes, str, os.PathLike]
+    ) -> None:
         super().__init__(project_name, path)
 
     def run(self) -> Optional[Tuple[str, str]]:
-        setup_py = os.path.join(self._path, 'setup.py')
+        setup_py = os.path.join(self._path, "setup.py")
         if not os.path.exists(setup_py) and not os.path.isfile(setup_py):
             return None
 
@@ -38,6 +37,6 @@ class SetupPyRunner(AbstractRunner):
             os.chdir(self._path)
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
-            out, err = env.run_commands(['python setup.py test'])
+            out, err = env.run_commands(["python setup.py test"])
             os.chdir(old_dir)
             return out, err

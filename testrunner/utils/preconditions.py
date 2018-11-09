@@ -48,7 +48,7 @@ class Preconditions(object):
     """
 
     @staticmethod
-    def check_not_none(reference: Any, message: str = '') -> Any:
+    def check_not_none(reference: Any, message: str = "") -> Any:
         """
         Checks whether a provided reference is not None.
 
@@ -64,7 +64,7 @@ class Preconditions(object):
         return reference
 
     @staticmethod
-    def check_state(expression: bool, message: str = '') -> None:
+    def check_state(expression: bool, message: str = "") -> None:
         """
         Checks whether a provided state expression evaluates to True.
 
@@ -77,7 +77,7 @@ class Preconditions(object):
             raise IllegalStateException(message)
 
     @staticmethod
-    def check_argument(expression: bool, message: str = '') -> None:
+    def check_argument(expression: bool, message: str = "") -> None:
         """
         Checks whether a provided argument evaluates to True.
 

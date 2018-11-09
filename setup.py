@@ -21,60 +21,60 @@ from setuptools import setup
 
 # Determine version in a more robust way than importing test-runner,
 # cf http://gehrecke.de/2014/02/distributing-a-python-command-line-application/
-with open('testrunner/__init__.py') as f:
-    version = re.search('^__version__[ ]*=[ ]*\'(.*)\'', f.read(),
-                        re.M).group(1)
+with open("testrunner/__init__.py") as f:
+    version = re.search("^__version__[ ]*=[ ]*'(.*)'", f.read(), re.M).group(1)
 
 # Get the long description from the read-me file
-readme = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.md')
+readme = os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")
 try:
     import pypandoc
 
     long_description = pypandoc.convert_file(
-        readme, 'rst', format='markdown_github-hard_line_breaks')
+        readme, "rst", format="markdown_github-hard_line_breaks"
+    )
 except (IOError, ImportError):
-    with open(readme, 'rb') as f:
-        long_description = f.read().decode('utf-8')
+    with open(readme, "rb") as f:
+        long_description = f.read().decode("utf-8")
 
-with open('requirements.txt') as f:
+with open("requirements.txt") as f:
     required_packages = []
     for line in f.readlines():
         required_packages.append(line)
 
-with open('dev-requirements.txt') as f:
+with open("dev-requirements.txt") as f:
     dev_required_packages = required_packages
     for line in f.readlines():
-        if 'requirements.txt' not in line:
+        if "requirements.txt" not in line:
             dev_required_packages.append(line)
 
 setup(
-    name='test-runner',
+    name="test-runner",
     version=version,
-    author='Stephan Lukasczyk',
-    author_email='python-test-runner@googlegroups.com',
-    description='A small test runner library for Python testing',
+    author="Stephan Lukasczyk",
+    author_email="python-test-runner@googlegroups.com",
+    description="A small test runner library for Python testing",
     long_description=long_description,
-    url='https://github.com/stephanlukasczyk/test-runner',
-    license='GNU General Public License (GPLv3)',
-    keywords='test runner unittest nose pytest',
+    url="https://github.com/stephanlukasczyk/test-runner",
+    license="GNU General Public License (GPLv3)",
+    keywords="test runner unittest nose pytest",
     classifiers=[
-        'Programming Language :: Python',
-        'Development Status :: 1 - Planning',
-        'License :: OSI Approved :: GNU General Public License v3',
-        'Operating System :: Linux',
-        'Operating System :: macOS',
-        'Operating System :: POSIX',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Topic :: Education :: Testing',
-        'Topic :: Software Development :: Testing',
-        'Topic :: Software Development :: Testing :: Unit'
+        "Programming Language :: Python",
+        "Development Status :: 1 - Planning",
+        "License :: OSI Approved :: GNU General Public License v3",
+        "Operating System :: Linux",
+        "Operating System :: macOS",
+        "Operating System :: POSIX",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Education :: Testing",
+        "Topic :: Software Development :: Testing",
+        "Topic :: Software Development :: Testing :: Unit",
     ],
-    platforms=['Linux', 'macOS', 'POSIX'],
-    packages=['testrunner'],
+    platforms=["Linux", "macOS", "POSIX"],
+    packages=["testrunner"],
     install_requires=required_packages,
     setup_requires=dev_required_packages,
-    test_suite='py.test',
-    zip_safe=True
+    test_suite="py.test",
+    zip_safe=True,
 )
