@@ -36,7 +36,7 @@ class SetupPyRunnerTest(unittest.TestCase):
     def test_run(self):
         out, err = self._runner.run()
         self.assertFalse('error' in err.lower())
-        self.assertTrue('passed in out.lower()')
+        self.assertTrue('passed' in out.lower())
 
     def test_run_no_setup_py(self):
         runner = SetupPyRunner('test', 'test')
