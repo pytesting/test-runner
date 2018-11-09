@@ -4,4 +4,5 @@ pytest
 pytest-cov
 pypandoc
 flake8
+black
 -r ./requirements.txt
