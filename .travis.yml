@@ -7,8 +7,8 @@ install:
   - pip install coverage
   - pip install pytest-cov
   - pip install flake8
+  - pip install codecov
   - pip install -r requirements.txt
-  - travis_retry pip install -e git+https://github.com/codacy/python-codacy-coverage.git#egg=codacy
   - sudo apt-get install pandoc
 before_script:
   - "flake8 --ignore=F401 ."
@@ -18,7 +18,7 @@ after_success:
   - coverage combine
   - coverage report
   - coverage xml
-  - if [ ! -z "$CODACY_PROJECT_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then python-codacy-coverage -r coverage.xml; fi
+  - if [ ! -z "$CODACY_PROJECT_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codecov; fi
 notifications:
   email:
     - python-test-runner@googlegroups.com
