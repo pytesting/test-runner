@@ -16,7 +16,7 @@
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from abc import ABCMeta, abstractmethod
-from typing import Union, List
+from typing import Union, List, Optional, Tuple
 
 from testrunner.utils.preconditions import Preconditions
 
@@ -35,7 +35,7 @@ class AbstractRunner(metaclass=ABCMeta):
         self._path = path
 
     @abstractmethod
-    def run(self):
+    def run(self) -> Optional[Tuple[str, str]]:
         pass  # pragma: no cover
 
     def _extract_necessary_packages(self) -> List[str]:
