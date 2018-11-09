@@ -36,17 +36,16 @@ class AbstractRunner(metaclass=ABCMeta):
 
     @abstractmethod
     def run(self):
-        pass
+        pass  # pragma: no cover
 
     def _extract_necessary_packages(self) -> List[str]:
         packages = []
-
-        requirements_file = os.path.join(self._path, 'requirements.txt')
-        packages.extend(self._extract_packages(requirements_file))
-
-        requirements_file = os.path.join(self._path, 'dev-requirements.txt')
-        packages.extend(self._extract_packages(requirements_file))
-
+        file_names = ['requirements.txt', 'dev-requirements.txt',
+                      'test-requirements.txt', 'requirements-dev.txt',
+                      'requirements-test.txt']
+        for file_name in file_names:
+            packages.extend(
+                self._extract_packages(os.path.join(self._path, file_name)))
         return packages
 
     @staticmethod
