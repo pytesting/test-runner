@@ -47,7 +47,6 @@ class VirtualEnvironmentTest(unittest.TestCase):
     def test_run_commands(self):
         self._venv.add_package_for_installation('benchexec')
         out, err = self._venv.run_commands([''])
-        self.assertIsNone(err)
         self.assertTrue('Successfully installed benchexec' in str(out))
 
     def test_add_package_for_installation(self):

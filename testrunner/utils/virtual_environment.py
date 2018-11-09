@@ -96,6 +96,7 @@ class VirtualEnvironment(object):
             command_list.append('pip install {}'.format(package))
         command_list.extend(commands)
         cmd = ';'.join(command_list)
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, shell=True)
         out, err = process.communicate()
-        return out, err
+        return out.decode('utf-8'), err.decode('utf-8')
