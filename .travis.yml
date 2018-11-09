@@ -18,7 +18,7 @@ after_success:
   - coverage combine
   - coverage report
   - coverage xml
-  - if [ ! -z "$CODACY_PROJECT_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codecov; fi
+  - if [ ! -z "$CODECOV_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codecov; fi
 notifications:
   email:
     - python-test-runner@googlegroups.com
