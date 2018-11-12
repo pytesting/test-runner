@@ -21,6 +21,6 @@ from testrunner.utils.preconditions import (  # noqa: F401
     NoneValueException,
 )
 
-__version__ = "0.1.dev3"
+__version__ = "0.1.dev4"
 __name__ = "testrunner"
 __author__ = "Stephan Lukasczyk"
