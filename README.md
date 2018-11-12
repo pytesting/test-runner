@@ -9,4 +9,4 @@ coverage measuring, independent of the used testing framework.
 [![codecov](https://codecov.io/gh/pytesting/test-runner/branch/master/graph/badge.svg?token=yLu7itEVep)](https://codecov.io/gh/pytesting/test-runner)
 [![License GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
-
+[![PyPI version](https://badge.fury.io/py/test-runner.svg)](https://badge.fury.io/py/test-runner)
