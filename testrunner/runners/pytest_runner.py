@@ -38,6 +38,12 @@ class PyTestRunner(AbstractRunner):
             env.add_packages_for_installation(packages)
             env.add_package_for_installation("pytest")
             env.add_package_for_installation("pytest-cov")
-            out, err = env.run_commands(["pytest --cov"])
+            out, err = env.run_commands(
+                [
+                    "pytest --cov={} --cov-report=term-missing".format(
+                        self._project_name
+                    )
+                ]
+            )
             os.chdir(old_dir)
             return out, err
