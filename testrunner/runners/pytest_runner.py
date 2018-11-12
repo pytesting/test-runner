@@ -37,6 +37,7 @@ class PyTestRunner(AbstractRunner):
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
             env.add_package_for_installation("pytest")
-            out, err = env.run_commands(["pytest"])
+            env.add_package_for_installation("pytest-cov")
+            out, err = env.run_commands(["pytest --cov"])
             os.chdir(old_dir)
             return out, err
