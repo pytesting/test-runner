@@ -31,7 +31,7 @@ class AbstractRunnerTest(unittest.TestCase):
             "requirements.txt": "foo",
             "dev-requirements.txt": "bar",
             "test-requirements.txt": "baz",
-            "requirements-test.txt": "foobar",
+            "requirements-test.txt": "-r requirements.txt",
         }
         for k, v in files.items():
             with open(os.path.join(self._tmp_dir, k), "w") as f:
@@ -68,7 +68,6 @@ class AbstractRunnerTest(unittest.TestCase):
         self.assertTrue("foo" in result)
         self.assertTrue("bar" in result)
         self.assertTrue("baz" in result)
-        self.assertTrue("foobar" in result)
 
 
 if __name__ == "__main__":
