@@ -22,8 +22,7 @@ from setuptools import setup, find_packages
 # Determine version in a more robust way than importing test-runner,
 # cf http://gehrecke.de/2014/02/distributing-a-python-command-line-application/
 with open("testrunner/__init__.py") as f:
-    version = re.search("^__version__[ ]*=[ ]*\"(.*)\"", f.read(),
-                        re.M).group(1)
+    version = re.search('^__version__[ ]*=[ ]*"(.*)"', f.read(), re.M).group(1)
 
 # Get the long description from the read-me file
 readme = os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")
