@@ -59,5 +59,7 @@ class AbstractRunner(metaclass=ABCMeta):
         ):
             with open(requirements_file) as f:
                 for line in f.readlines():
-                    packages.append(line)
+                    if "requirements" in line:
+                        continue
+                    packages.append(line.strip())
         return packages
