@@ -48,7 +48,7 @@ with open("dev-requirements.txt") as f:
             dev_required_packages.append(line)
 
 setup(
-    name="testrunner",
+    name="test-runner",
     version=version,
     author="Stephan Lukasczyk",
     author_email="python-test-runner@googlegroups.com",
