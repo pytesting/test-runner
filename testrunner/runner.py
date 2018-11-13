@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
-
 from enum import Enum, auto
+from plumbum import local
 from typing import Union, Tuple
 
 from testrunner.runners.abstract_runner import AbstractRunner
@@ -61,6 +61,8 @@ class Runner(object):
         """
         self._project_name = project_name
         self._repo_path = repo_path
+        self._grep = local["grep"]
+
         if runner != RunnerType.AUTO_DETECT:
             self._runner_type = runner
         else:
@@ -78,6 +80,48 @@ class Runner(object):
         else:
             raise IllegalStateException("Could not find a matching runner!")
         return runner
+
+    def _is_pytest(self) -> bool:
+        if os.path.exists(
+            os.path.join(self._repo_path, "setup.py")
+        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
+            _, r, _ = self._grep[
+                "test_suite=pytest", os.path.join(self._repo_path, "setup.py")
+            ].run(retcode=None)
+            if len(r) > 0:
+                return True
+
+            _, r, _ = self._grep[
+                "test_suite=py.test", os.path.join(self._repo_path, "setup.py")
+            ].run(retcode=None)
+            if len(r) > 0:
+                return True
+
+        if os.path.exists(
+            os.path.join(self._repo_path, "pytest.ini")
+        ) and os.path.isfile(os.path.join(self._repo_path, "pytest.ini")):
+            return True
+
+        _, r, _ = self._grep["-R", "import pytest", self._repo_path].run(
+            retcode=None
+        )
+        if len(r) > 0:
+            return True
+
+        _, r, _ = self._grep["-R", "from pytest import", self._repo_path].run(
+            retcode=None
+        )
+        if len(r) > 0:
+            return True
+
+        _, r, _ = self._grep["-R", "pytest", self._repo_path].run(retcode=None)
+        if len(r) > 0:
+            return True
+
+        return False
+
+    def _is_setup_py(self) -> bool:
+        return False
 
     def run(self) -> Tuple[str, str]:
         """
