@@ -40,3 +40,11 @@ class SetupPyRunner(AbstractRunner):
             out, err = env.run_commands(["python setup.py test"])
             os.chdir(old_dir)
             return out, err
+
+    def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
+        raise NotImplementedError("Implement me!")
+
+    def get_summary_result(
+        self, log: str
+    ) -> Optional[Tuple[int, int, int, float]]:
+        raise NotImplementedError("Implement me!")

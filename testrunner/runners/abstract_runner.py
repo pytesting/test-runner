@@ -36,6 +36,16 @@ class AbstractRunner(metaclass=ABCMeta):
     def run(self) -> Optional[Tuple[str, str]]:
         pass  # pragma: no cover
 
+    @abstractmethod
+    def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
+        pass  # pragma: no cover
+
+    @abstractmethod
+    def get_summary_result(
+        self, log: str
+    ) -> Optional[Tuple[int, int, int, float]]:
+        pass  # pragma: no cover
+
     def _extract_necessary_packages(self) -> List[str]:
         packages = []
         file_names = [

@@ -48,8 +48,7 @@ class PyTestRunner(AbstractRunner):
             os.chdir(old_dir)
             return out, err
 
-    @staticmethod
-    def get_total_result(log: str) -> Optional[Tuple[int, int, str]]:
+    def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
         matches = re.search(r"TOTAL\s+([0-9]+)\s+([0-9]+)\s+([0-9]+%)", log)
         if matches:
             statements = int(matches.group(1)) if matches.group(1) else 0
@@ -58,8 +57,9 @@ class PyTestRunner(AbstractRunner):
             return statements, missing, coverage
         return None
 
-    @staticmethod
-    def get_summary_result(log: str) -> Optional[Tuple[int, int, int, float]]:
+    def get_summary_result(
+        self, log: str
+    ) -> Optional[Tuple[int, int, int, float]]:
         matches = re.search(
             r"[=]+ (([0-9]+) failed, )?"
             r"([0-9]+) passed"
