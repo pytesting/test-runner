@@ -27,7 +27,7 @@ install:
   - pip install flake8
   - pip install codecov
   - pip install -r requirements.txt
-  - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get install pandoc; else brew install pandoc; fi
+  - sudo apt-get install pandoc
 before_script:
   - if [[ $TRAVIS_PYTHON_VERSION != "3.8-dev" ]]; then flake8 .; fi
 script:
