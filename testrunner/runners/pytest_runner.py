@@ -16,8 +16,7 @@
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
-
-from typing import Union, Optional, Tuple, Dict, Any
+from typing import Union, Optional, Tuple
 
 from testrunner.runners.abstract_runner import AbstractRunner
 from testrunner.utils.context_managers import virtualenv
