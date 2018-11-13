@@ -110,6 +110,13 @@ class TestRunner(unittest.TestCase):
         runner = Runner("test", self._pytest_dir, RunnerType.PYTEST)
         self.assertTrue(runner._is_pytest())
 
+    def test_detect_runner_type_pytest(self):
+        with open(os.path.join(self._pytest_dir, "foo.txt"), "w") as f:
+            f.write("foo pytest bar")
+        runner = Runner("test", self._pytest_dir, RunnerType.AUTO_DETECT)
+        runner_type = runner._detect_runner_type()
+        self.assertEqual(runner_type, RunnerType.PYTEST)
+
 
 if __name__ == "__main__":
     unittest.main()

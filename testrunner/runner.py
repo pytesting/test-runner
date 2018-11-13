@@ -70,7 +70,11 @@ class Runner(object):
         self._runner = self._instantiate_runner()
 
     def _detect_runner_type(self) -> RunnerType:
-        return RunnerType._UNKNOWN
+        if self._is_pytest():
+            return RunnerType.PYTEST
+        elif self._is_setup_py():
+            return RunnerType.SETUP_PY
+        return RunnerType._UNKNOWN  # pragma: no cover
 
     def _instantiate_runner(self) -> AbstractRunner:
         if self._runner_type == RunnerType.PYTEST:
