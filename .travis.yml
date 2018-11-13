@@ -29,14 +29,14 @@ install:
   - pip install -r requirements.txt
   - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get install pandoc; else brew install pandoc; fi
 before_script:
-  - if [ $TRAVIS_OS_NAME = linux ] && [[ $TRAVIS_PYTHON_VERSION != "3.8-dev" ]]; then flake8 .; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != "3.8-dev" ]]; then flake8 .; fi
 script:
   - py.test --cov=testrunner tests/
 after_success:
   - coverage combine
   - coverage report
   - coverage xml
-  - if [ $TRAVIS_OS_NAME = linux ] && [ ! -z "$CODECOV_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codecov; fi
+  - if [ ! -z "$CODECOV_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codecov; fi
 notifications:
   email:
     - python-test-runner@googlegroups.com
