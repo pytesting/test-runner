@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
+import re
 
 from typing import Union, Optional, Tuple
 
@@ -47,3 +48,29 @@ class PyTestRunner(AbstractRunner):
             )
             os.chdir(old_dir)
             return out, err
+
+    @staticmethod
+    def _get_total_result(log: str) -> Optional[Tuple[int, int, str]]:
+        matches = re.search(r"TOTAL\s+([0-9]+)\s+([0-9]+)\s+([0-9]+%)", log)
+        if matches:
+            statements = int(matches.group(1)) if matches.group(1) else 0
+            missing = int(matches.group(2)) if matches.group(2) else 0
+            coverage = matches.group(3) if matches.group(3) else "0.0%"
+            return statements, missing, coverage
+        return None
+
+    @staticmethod
+    def _get_summary_result(log: str) -> Optional[Tuple[int, int, int, float]]:
+        matches = re.search(
+            r"[=]+ (([0-9]+) failed, )?"
+            r"([0-9]+) passed"
+            r"(, ([0-9]+) skipped)? in ([0-9.]+) seconds",
+            log,
+        )
+        if matches:
+            failed = int(matches.group(2)) if matches.group(2) else 0
+            passed = int(matches.group(3)) if matches.group(3) else 0
+            skipped = int(matches.group(5)) if matches.group(5) else 0
+            time = float(matches.group(6)) if matches.group(6) else 0.0
+            return failed, passed, skipped, time
+        return None
