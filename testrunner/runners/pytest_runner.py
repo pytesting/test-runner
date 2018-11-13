@@ -17,7 +17,7 @@
 import os
 import re
 
-from typing import Union, Optional, Tuple
+from typing import Union, Optional, Tuple, Dict, Any
 
 from testrunner.runners.abstract_runner import AbstractRunner
 from testrunner.utils.context_managers import virtualenv
@@ -50,7 +50,7 @@ class PyTestRunner(AbstractRunner):
             return out, err
 
     @staticmethod
-    def _get_total_result(log: str) -> Optional[Tuple[int, int, str]]:
+    def get_total_result(log: str) -> Optional[Tuple[int, int, str]]:
         matches = re.search(r"TOTAL\s+([0-9]+)\s+([0-9]+)\s+([0-9]+%)", log)
         if matches:
             statements = int(matches.group(1)) if matches.group(1) else 0
@@ -60,7 +60,7 @@ class PyTestRunner(AbstractRunner):
         return None
 
     @staticmethod
-    def _get_summary_result(log: str) -> Optional[Tuple[int, int, int, float]]:
+    def get_summary_result(log: str) -> Optional[Tuple[int, int, int, float]]:
         matches = re.search(
             r"[=]+ (([0-9]+) failed, )?"
             r"([0-9]+) passed"

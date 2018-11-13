@@ -52,23 +52,23 @@ TOTAL                              39      5    87%
         self.assertTrue("passed" in out.lower())
 
     def test_get_total_result(self):
-        s, m, c = self._dummy_runner._get_total_result(self._output)
+        s, m, c = self._dummy_runner.get_total_result(self._output)
         self.assertEqual(39, s)
         self.assertEqual(5, m)
         self.assertEqual("87%", c)
 
     def test_get_total_result_fail(self):
-        self.assertIsNone(self._dummy_runner._get_total_result(""))
+        self.assertIsNone(self._dummy_runner.get_total_result(""))
 
     def test_get_passed_result(self):
-        f, p, s, t = self._dummy_runner._get_summary_result(self._output)
+        f, p, s, t = self._dummy_runner.get_summary_result(self._output)
         self.assertEqual(0, f)
         self.assertEqual(13, p)
         self.assertEqual(0, s)
         self.assertEqual(0.06, t)
 
     def test_get_passed_result_with_skipped(self):
-        f, p, s, t = self._dummy_runner._get_summary_result(
+        f, p, s, t = self._dummy_runner.get_summary_result(
             "======== 49 passed, 3 skipped in 29.39 seconds ========="
         )
         self.assertEqual(0, f)
@@ -77,7 +77,7 @@ TOTAL                              39      5    87%
         self.assertEqual(29.39, t)
 
     def test_get_passed_result_skipped_error(self):
-        f, p, s, t = self._dummy_runner._get_summary_result(
+        f, p, s, t = self._dummy_runner.get_summary_result(
             "===== 1 failed, 49 passed, 3 skipped in 30.44 seconds ====="
         )
         self.assertEqual(1, f)
@@ -86,7 +86,7 @@ TOTAL                              39      5    87%
         self.assertEqual(30.44, t)
 
     def test_get_passed_result_with_error(self):
-        f, p, s, t = self._dummy_runner._get_summary_result(
+        f, p, s, t = self._dummy_runner.get_summary_result(
             "========= 1 failed, 49 passed in 38.12 seconds ======"
         )
         self.assertEqual(1, f)
@@ -95,7 +95,7 @@ TOTAL                              39      5    87%
         self.assertEqual(38.12, t)
 
     def test_get_passed_result_fail(self):
-        self.assertIsNone(self._dummy_runner._get_summary_result(""))
+        self.assertIsNone(self._dummy_runner.get_summary_result(""))
 
 
 if __name__ == "__main__":
