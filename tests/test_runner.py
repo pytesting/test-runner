@@ -117,6 +117,25 @@ class TestRunner(unittest.TestCase):
         runner_type = runner._detect_runner_type()
         self.assertEqual(runner_type, RunnerType.PYTEST)
 
+    def test_is_setup_py_test(self):
+        with open(os.path.join(self._setup_py_dir, "setup.py"), "w") as f:
+            f.write("    test_suite=nose")
+        runner = Runner("test", self._setup_py_dir, RunnerType.SETUP_PY)
+        self.assertTrue(runner._is_setup_py())
+
+    def test_is_not_setup_py_test(self):
+        with open(os.path.join(self._setup_py_dir, "setup.py"), "w") as f:
+            f.write("foo")
+        runner = Runner("test", self._setup_py_dir, RunnerType.SETUP_PY)
+        self.assertFalse(runner._is_setup_py())
+
+    def test_detect_runner_type_setup_py(self):
+        with open(os.path.join(self._setup_py_dir, "setup.py"), "w") as f:
+            f.write("    test_suite=nose")
+        runner = Runner("test", self._setup_py_dir, RunnerType.SETUP_PY)
+        runner_type = runner._detect_runner_type()
+        self.assertEqual(runner_type, RunnerType.SETUP_PY)
+
 
 if __name__ == "__main__":
     unittest.main()

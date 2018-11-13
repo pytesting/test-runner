@@ -125,6 +125,15 @@ class Runner(object):
         return False
 
     def _is_setup_py(self) -> bool:
+        if os.path.exists(
+            os.path.join(self._repo_path, "setup.py")
+        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
+            _, r, _ = self._grep[
+                "test_suite=", os.path.join(self._repo_path, "setup.py")
+            ].run(retcode=None)
+            if len(r) > 0:
+                return True
+
         return False
 
     def run(self) -> Tuple[str, str]:
