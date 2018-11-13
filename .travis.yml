@@ -4,23 +4,10 @@ language: python
 cache: pip
 matrix:
   include:
-    - os: linux
-      sudo: required
-      python: 3.6
-      env: TOXENV=py36
-    - os: linux
-      sudo: required
-      python: 3.7
-      env: TOXENV=py37
-    - os: linux
-      sudo: required
-      python: "3.8-dev"
-      env: TOXENV=py38-dev
-    - os: osx
-      language: generic
-      env: TOXENV=py37
+    - python: 3.6
+    - python: 3.7
+    - python: "3.8-dev"
 install:
-  - pip install tox
   - pip install lxml
   - pip install coverage
   - pip install pytest-cov
