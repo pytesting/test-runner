@@ -16,6 +16,7 @@
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import shutil
+import sys
 import tempfile
 import unittest
 
@@ -23,12 +24,14 @@ from testrunner.utils.context_managers import tempdir, cd, virtualenv
 
 
 class ContextManagerTest(unittest.TestCase):
+    @unittest.skipIf("darwin" in sys.platform.lower(), "Skip on macOS")
     def test_temp_dir(self):
         with tempdir() as temp_dir:
             self.assertTrue(os.path.isdir(temp_dir))
             self.assertEqual(temp_dir, os.getcwd())
         self.assertFalse(os.path.isdir(temp_dir))
 
+    @unittest.skipIf("darwin" in sys.platform.lower(), "Skip on macOS")
     def test_cd_without_cleanup(self):
         cwd = os.getcwd()
         tmp_dir = tempfile.mkdtemp()
@@ -38,6 +41,7 @@ class ContextManagerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(tmp_dir))
         shutil.rmtree(tmp_dir)
 
+    @unittest.skipIf("darwin" in sys.platform.lower(), "Skip on macOS")
     def test_cd_with_cleanup(self):
         def cleanup():
             shutil.rmtree(tmp_dir)
