@@ -71,6 +71,6 @@ class PyTestRunner(AbstractRunner):
             failed = int(matches.group(2)) if matches.group(2) else 0
             passed = int(matches.group(3)) if matches.group(3) else 0
             skipped = int(matches.group(5)) if matches.group(5) else 0
-            time = float(matches.group(6)) if matches.group(6) else 0.0
+            time = float(matches.group(8)) if matches.group(8) else 0.0
             return failed, passed, skipped, time
         return None
