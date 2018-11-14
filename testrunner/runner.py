@@ -17,7 +17,7 @@
 import os
 from enum import Enum, auto
 from plumbum import local
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional
 
 from testrunner.runners.abstract_runner import AbstractRunner
 from testrunner.runners.pytest_runner import PyTestRunner
@@ -143,3 +143,11 @@ class Runner(object):
         :return: A tuple (stdout, stderr) with the outputs of the run process
         """
         return self._runner.run()
+
+    def get_total_result(self, result: str) -> Optional[Tuple[int, int, str]]:
+        return self._runner.get_total_result(result)
+
+    def get_summary_result(
+        self, result: str
+    ) -> Optional[Tuple[int, int, int, float]]:
+        return self._runner.get_summary_result(result)
