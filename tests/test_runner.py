@@ -60,6 +60,31 @@ class TestRunner(unittest.TestCase):
             MockHelper.assert_called_once()
             self.assertEqual(("foo", "bar"), result)
 
+    def test_get_total_result(self):
+        with mock.patch("testrunner.runner.PyTestRunner") as MockHelper:
+            MockHelper.return_value.get_total_result.return_value = (
+                23,
+                42,
+                "foo",
+            )
+            runner = Runner("test", "test", RunnerType.PYTEST)
+            result = runner.get_total_result("bar")
+            MockHelper.assert_called_once()
+            self.assertEqual((23, 42, "foo"), result)
+
+    def test_get_summary_result(self):
+        with mock.patch("testrunner.runner.PyTestRunner") as MockHelper:
+            MockHelper.return_value.get_summary_result.return_value = (
+                0,
+                8,
+                15,
+                23.42,
+            )
+            runner = Runner("test", "test", RunnerType.PYTEST)
+            result = runner.get_summary_result("bar")
+            MockHelper.assert_called_once()
+            self.assertEqual((0, 8, 15, 23.42), result)
+
     def test_is_not_pytest(self):
         runner = Runner("test", self._pytest_dir, RunnerType.PYTEST)
         self.assertFalse(runner._is_pytest())
