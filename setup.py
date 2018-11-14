@@ -54,7 +54,7 @@ setup(
     author_email="python-test-runner@googlegroups.com",
     description="A small test runner library for Python testing",
     long_description=long_description,
-    url="https://github.com/stephanlukasczyk/test-runner",
+    url="https://github.com/pytesting/test-runner",
     license="GNU General Public License (GPLv3)",
     keywords="test runner unittest nose pytest",
     classifiers=[
