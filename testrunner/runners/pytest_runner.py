@@ -63,7 +63,8 @@ class PyTestRunner(AbstractRunner):
         matches = re.search(
             r"[=]+ (([0-9]+) failed, )?"
             r"([0-9]+) passed"
-            r"(, ([0-9]+) skipped)? in ([0-9.]+) seconds",
+            r"(, ([0-9]+) skipped)?"
+            r"(, ([0-9]+) warnings)? in ([0-9.]+) seconds",
             log,
         )
         if matches:
