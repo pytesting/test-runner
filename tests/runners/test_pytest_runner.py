@@ -57,6 +57,14 @@ TOTAL                              39      5    87%
         self.assertEqual(5, m)
         self.assertEqual("87%", c)
 
+    def test_get_total_result_with_branches(self):
+        s, m, c = self._dummy_runner.get_total_result(
+            "TOTAL                             244      5     56      1    97%"
+        )
+        self.assertEqual(244, s)
+        self.assertEqual(5, m)
+        self.assertEqual("97%", c)
+
     def test_get_total_result_fail(self):
         self.assertIsNone(self._dummy_runner.get_total_result(""))
 

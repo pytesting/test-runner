@@ -65,11 +65,18 @@ class PyTestRunner(AbstractRunner):
             return out, err
 
     def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
-        matches = re.search(r"TOTAL\s+([0-9]+)\s+([0-9]+)\s+([0-9]+%)", log)
+        matches = re.search(
+            r"TOTAL\s+"
+            r"([0-9]+)\s+"
+            r"([0-9]+)\s+"
+            r"(([0-9]+)\s+([0-9]+)\s+)?"
+            r"([0-9]+%)",
+            log,
+        )
         if matches:
             statements = int(matches.group(1)) if matches.group(1) else 0
             missing = int(matches.group(2)) if matches.group(2) else 0
-            coverage = matches.group(3) if matches.group(3) else "0.0%"
+            coverage = matches.group(6) if matches.group(6) else "0.0%"
             return statements, missing, coverage
         return None
 
