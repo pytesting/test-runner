@@ -80,13 +80,17 @@ class PyTestRunner(AbstractRunner):
             r"[=]+ (([0-9]+) failed, )?"
             r"([0-9]+) passed"
             r"(, ([0-9]+) skipped)?"
-            r"(, ([0-9]+) warnings)? in ([0-9.]+) seconds",
+            r"(, ([0-9]+) warnings)?"
+            r"(, ([0-9]+) error)?"
+            r" in ([0-9.]+) seconds",
             log,
         )
         if matches:
             failed = int(matches.group(2)) if matches.group(2) else 0
             passed = int(matches.group(3)) if matches.group(3) else 0
             skipped = int(matches.group(5)) if matches.group(5) else 0
-            time = float(matches.group(8)) if matches.group(8) else 0.0
+            warnings = int(matches.group(7)) if matches.group(7) else 0
+            error = int(matches.group(9)) if matches.group(9) else 0
+            time = float(matches.group(10)) if matches.group(10) else 0.0
             return failed, passed, skipped, time
         return None
