@@ -34,6 +34,22 @@ class PyTestRunner(AbstractRunner):
         with virtualenv(self._project_name) as env:
             old_dir = os.getcwd()
             os.chdir(self._path)
+
+            if os.path.exists(
+                os.path.join(os.getcwd(), self._project_name.replace("-", ""))
+            ):
+                project_name = self._project_name.replace("-", "")
+            elif os.path.exists(
+                os.path.join(os.getcwd(), self._project_name.replace("_", ""))
+            ):
+                project_name = self._project_name.replace("_", "")
+            elif os.path.exists(
+                os.path.join(os.getcwd(), self._project_name.replace("-", "_"))
+            ):
+                project_name = self._project_name.replace("-", "_")
+            else:
+                project_name = self._project_name
+
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
             env.add_package_for_installation("pytest")
@@ -41,7 +57,7 @@ class PyTestRunner(AbstractRunner):
             out, err = env.run_commands(
                 [
                     "pytest --cov={} --cov-report=term-missing".format(
-                        self._project_name
+                        project_name
                     )
                 ]
             )
