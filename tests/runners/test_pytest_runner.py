@@ -91,7 +91,7 @@ TOTAL                              39      5    87%
         self.assertEqual(0, r["error"])
         self.assertEqual(30.44, r["time"])
 
-    def test_get_passed_result_with_error(self):
+    def test_get_passed_result_with_failed(self):
         r = self._dummy_runner.get_summary_result(
             "========= 1 failed, 49 passed in 38.12 seconds ======"
         )
@@ -101,6 +101,39 @@ TOTAL                              39      5    87%
         self.assertEqual(0, r["warnings"])
         self.assertEqual(0, r["error"])
         self.assertEqual(38.12, r["time"])
+
+    def test_get_passed_result_with_error(self):
+        r = self._dummy_runner.get_summary_result(
+            "======== 55 failed, 18 passed, 13 error in 24.17 seconds ========="
+        )
+        self.assertEqual(55, r["failed"])
+        self.assertEqual(18, r["passed"])
+        self.assertEqual(0, r["skipped"])
+        self.assertEqual(0, r["warnings"])
+        self.assertEqual(13, r["error"])
+        self.assertEqual(24.17, r["time"])
+
+    def test_get_passed_result_with_warning(self):
+        r = self._dummy_runner.get_summary_result(
+            "======= 54 passed, 3 skipped, 1 warnings in 32.27 seconds ========"
+        )
+        self.assertEqual(0, r["failed"])
+        self.assertEqual(54, r["passed"])
+        self.assertEqual(3, r["skipped"])
+        self.assertEqual(1, r["warnings"])
+        self.assertEqual(0, r["error"])
+        self.assertEqual(32.27, r["time"])
+
+    def test_get_passed_result_with_failed_warning(self):
+        r = self._dummy_runner.get_summary_result(
+            "======== 4 failed, 15 passed, 2 warnings in 0.84 seconds ========="
+        )
+        self.assertEqual(4, r["failed"])
+        self.assertEqual(15, r["passed"])
+        self.assertEqual(0, r["skipped"])
+        self.assertEqual(2, r["warnings"])
+        self.assertEqual(0, r["error"])
+        self.assertEqual(0.84, r["time"])
 
     def test_get_passed_result_fail(self):
         self.assertIsNone(self._dummy_runner.get_summary_result(""))
