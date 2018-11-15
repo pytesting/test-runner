@@ -74,16 +74,17 @@ class TestRunner(unittest.TestCase):
 
     def test_get_summary_result(self):
         with mock.patch("testrunner.runner.PyTestRunner") as MockHelper:
-            MockHelper.return_value.get_summary_result.return_value = (
-                0,
-                8,
-                15,
-                23.42,
-            )
+            MockHelper.return_value.get_summary_result.return_value = {
+                "failed": 0,
+                "passed": 8,
+                "skipped": 15,
+                "time": 23.42,
+            }
             runner = Runner("test", "test", RunnerType.PYTEST)
             result = runner.get_summary_result("bar")
             MockHelper.assert_called_once()
-            self.assertEqual((0, 8, 15, 23.42), result)
+            r = {"failed": 0, "passed": 8, "skipped": 15, "time": 23.42}
+            self.assertEqual(r, result)
 
     def test_is_not_pytest(self):
         runner = Runner("test", self._pytest_dir, RunnerType.PYTEST)

@@ -16,7 +16,7 @@
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
-from typing import Union, Optional, Tuple
+from typing import Union, Optional, Tuple, Dict, Any
 
 from testrunner.runners.abstract_runner import AbstractRunner
 from testrunner.utils.context_managers import virtualenv
@@ -73,9 +73,7 @@ class PyTestRunner(AbstractRunner):
             return statements, missing, coverage
         return None
 
-    def get_summary_result(
-        self, log: str
-    ) -> Optional[Tuple[int, int, int, float]]:
+    def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
         matches = re.search(
             r"[=]+ (([0-9]+) failed, )?"
             r"([0-9]+) passed"
@@ -86,11 +84,12 @@ class PyTestRunner(AbstractRunner):
             log,
         )
         if matches:
-            failed = int(matches.group(2)) if matches.group(2) else 0
-            passed = int(matches.group(3)) if matches.group(3) else 0
-            skipped = int(matches.group(5)) if matches.group(5) else 0
-            warnings = int(matches.group(7)) if matches.group(7) else 0
-            error = int(matches.group(9)) if matches.group(9) else 0
-            time = float(matches.group(10)) if matches.group(10) else 0.0
-            return failed, passed, skipped, time
+            return {
+                "failed": int(matches.group(2)) if matches.group(2) else 0,
+                "passed": int(matches.group(3)) if matches.group(3) else 0,
+                "skipped": int(matches.group(5)) if matches.group(5) else 0,
+                "warnings": int(matches.group(7)) if matches.group(7) else 0,
+                "error": int(matches.group(9)) if matches.group(9) else 0,
+                "time": float(matches.group(10)) if matches.group(10) else 0.0,
+            }
         return None

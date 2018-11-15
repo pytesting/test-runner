@@ -17,7 +17,7 @@
 import os
 from enum import Enum, auto
 from plumbum import local
-from typing import Union, Tuple, Optional
+from typing import Union, Tuple, Optional, Dict, Any
 
 from testrunner.runners.abstract_runner import AbstractRunner
 from testrunner.runners.pytest_runner import PyTestRunner
@@ -147,7 +147,5 @@ class Runner(object):
     def get_total_result(self, result: str) -> Optional[Tuple[int, int, str]]:
         return self._runner.get_total_result(result)
 
-    def get_summary_result(
-        self, result: str
-    ) -> Optional[Tuple[int, int, int, float]]:
+    def get_summary_result(self, result: str) -> Optional[Dict[str, Any]]:
         return self._runner.get_summary_result(result)

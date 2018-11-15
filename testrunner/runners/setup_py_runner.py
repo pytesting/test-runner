@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
-from typing import Union, Optional, Tuple
+from typing import Union, Optional, Tuple, Dict, Any
 
 from testrunner.runners.abstract_runner import AbstractRunner
 from testrunner.utils.context_managers import virtualenv
@@ -44,7 +44,5 @@ class SetupPyRunner(AbstractRunner):
     def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
         raise NotImplementedError("Implement me!")
 
-    def get_summary_result(
-        self, log: str
-    ) -> Optional[Tuple[int, int, int, float]]:
+    def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
         raise NotImplementedError("Implement me!")

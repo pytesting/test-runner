@@ -61,38 +61,46 @@ TOTAL                              39      5    87%
         self.assertIsNone(self._dummy_runner.get_total_result(""))
 
     def test_get_passed_result(self):
-        f, p, s, t = self._dummy_runner.get_summary_result(self._output)
-        self.assertEqual(0, f)
-        self.assertEqual(13, p)
-        self.assertEqual(0, s)
-        self.assertEqual(0.06, t)
+        r = self._dummy_runner.get_summary_result(self._output)
+        self.assertEqual(0, r["failed"])
+        self.assertEqual(13, r["passed"])
+        self.assertEqual(0, r["skipped"])
+        self.assertEqual(0, r["warnings"])
+        self.assertEqual(0, r["error"])
+        self.assertEqual(0.06, r["time"])
 
     def test_get_passed_result_with_skipped(self):
-        f, p, s, t = self._dummy_runner.get_summary_result(
+        r = self._dummy_runner.get_summary_result(
             "======== 49 passed, 3 skipped in 29.39 seconds ========="
         )
-        self.assertEqual(0, f)
-        self.assertEqual(49, p)
-        self.assertEqual(3, s)
-        self.assertEqual(29.39, t)
+        self.assertEqual(0, r["failed"])
+        self.assertEqual(49, r["passed"])
+        self.assertEqual(3, r["skipped"])
+        self.assertEqual(0, r["warnings"])
+        self.assertEqual(0, r["error"])
+        self.assertEqual(29.39, r["time"])
 
     def test_get_passed_result_skipped_error(self):
-        f, p, s, t = self._dummy_runner.get_summary_result(
+        r = self._dummy_runner.get_summary_result(
             "===== 1 failed, 49 passed, 3 skipped in 30.44 seconds ====="
         )
-        self.assertEqual(1, f)
-        self.assertEqual(49, p)
-        self.assertEqual(3, s)
-        self.assertEqual(30.44, t)
+        self.assertEqual(1, r["failed"])
+        self.assertEqual(49, r["passed"])
+        self.assertEqual(3, r["skipped"])
+        self.assertEqual(0, r["warnings"])
+        self.assertEqual(0, r["error"])
+        self.assertEqual(30.44, r["time"])
 
     def test_get_passed_result_with_error(self):
-        f, p, s, t = self._dummy_runner.get_summary_result(
+        r = self._dummy_runner.get_summary_result(
             "========= 1 failed, 49 passed in 38.12 seconds ======"
         )
-        self.assertEqual(1, f)
-        self.assertEqual(49, p)
-        self.assertEqual(0, s)
-        self.assertEqual(38.12, t)
+        self.assertEqual(1, r["failed"])
+        self.assertEqual(49, r["passed"])
+        self.assertEqual(0, r["skipped"])
+        self.assertEqual(0, r["warnings"])
+        self.assertEqual(0, r["error"])
+        self.assertEqual(38.12, r["time"])
 
     def test_get_passed_result_fail(self):
         self.assertIsNone(self._dummy_runner.get_summary_result(""))
