@@ -14,17 +14,36 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
+import os
 import shutil
 import tempfile
 import unittest
 from git import Repo
+from typing import List, Tuple
+from unittest import mock
+from unittest.mock import MagicMock
 
 from testrunner.runners.pytest_runner import PyTestRunner
+
+
+class VenvMock(MagicMock):
+    def __init__(self, *args, **kw) -> None:
+        super().__init__(*args, **kw)
+
+    def add_packages_for_installation(self, packages: List[str]) -> None:
+        pass
+
+    def add_package_for_installation(self, package: str) -> None:
+        pass
+
+    def run_commands(self, commands: List[str]) -> Tuple[str, str]:
+        return "out", "err"
 
 
 class PyTestRunnerTest(unittest.TestCase):
     def setUp(self):
         self._tmp_dir = tempfile.mkdtemp()
+        self._dummy_dir = tempfile.mkdtemp()
         url = "https://github.com/audreyr/standardjson"
         self._repo = Repo.clone_from(url, self._tmp_dir)
         self._runner = PyTestRunner("standardjson", self._tmp_dir)
@@ -45,11 +64,57 @@ TOTAL                              39      5    87%
 
     def tearDown(self):
         shutil.rmtree(self._tmp_dir)
+        shutil.rmtree(self._dummy_dir)
 
     def test_run(self):
         out, err = self._runner.run()
         self.assertFalse("error" in err.lower())
         self.assertTrue("passed" in out.lower())
+
+    @mock.patch("testrunner.runners.pytest_runner.virtualenv")
+    def test_run_with_minus(self, venv_mock: MagicMock):
+        def create_mock(project_name: str):
+            return VenvMock(project_name)
+
+        venv_mock.return_value.__enter__ = create_mock
+
+        os.mkdir(os.path.join(self._dummy_dir, "testfoo"))
+
+        r = PyTestRunner("test-foo", self._dummy_dir)
+        o, e = r.run()
+
+        self.assertEqual("out", o)
+        self.assertEqual("err", e)
+
+    @mock.patch("testrunner.runners.pytest_runner.virtualenv")
+    def test_run_with_underscore(self, venv_mock: MagicMock):
+        def create_mock(project_name: str):
+            return VenvMock(project_name)
+
+        venv_mock.return_value.__enter__ = create_mock
+
+        os.mkdir(os.path.join(self._dummy_dir, "testfoo"))
+
+        r = PyTestRunner("test_foo", self._dummy_dir)
+        o, e = r.run()
+
+        self.assertEqual("out", o)
+        self.assertEqual("err", e)
+
+    @mock.patch("testrunner.runners.pytest_runner.virtualenv")
+    def test_run_with_underscore_to_minus(self, venv_mock: MagicMock):
+        def create_mock(project_name: str):
+            return VenvMock(project_name)
+
+        venv_mock.return_value.__enter__ = create_mock
+
+        os.mkdir(os.path.join(self._dummy_dir, "test_foo"))
+
+        r = PyTestRunner("test-foo", self._dummy_dir)
+        o, e = r.run()
+
+        self.assertEqual("out", o)
+        self.assertEqual("err", e)
 
     def test_get_total_result(self):
         s, m, c = self._dummy_runner.get_total_result(self._output)
