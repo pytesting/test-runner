@@ -35,15 +35,15 @@ class PyTestRunner(AbstractRunner):
             old_dir = os.getcwd()
             os.chdir(self._path)
 
-            if os.path.exists(
+            if "-" in self._project_name and os.path.exists(
                 os.path.join(os.getcwd(), self._project_name.replace("-", ""))
             ):
                 project_name = self._project_name.replace("-", "")
-            elif os.path.exists(
+            elif "_" in self._project_name and os.path.exists(
                 os.path.join(os.getcwd(), self._project_name.replace("_", ""))
             ):
                 project_name = self._project_name.replace("_", "")
-            elif os.path.exists(
+            elif "-" in self._project_name and os.path.exists(
                 os.path.join(os.getcwd(), self._project_name.replace("-", "_"))
             ):
                 project_name = self._project_name.replace("-", "_")
