@@ -20,8 +20,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from pytesting_utils import IllegalArgumentException
+
 from testrunner.runners.abstract_runner import AbstractRunner
-from testrunner.utils.preconditions import IllegalArgumentException
 
 
 class AbstractRunnerTest(unittest.TestCase):

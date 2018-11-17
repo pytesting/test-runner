@@ -17,8 +17,9 @@
 import os
 from typing import Union, Optional, Tuple, Dict, Any
 
+from pytesting_utils import virtualenv
+
 from testrunner.runners.abstract_runner import AbstractRunner
-from testrunner.utils.context_managers import virtualenv
 
 
 class SetupPyRunner(AbstractRunner):

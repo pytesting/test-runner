@@ -16,13 +16,14 @@
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from enum import Enum, auto
-from plumbum import local
 from typing import Union, Tuple, Optional, Dict, Any
+
+from plumbum import local
+from pytesting_utils import IllegalStateException
 
 from testrunner.runners.abstract_runner import AbstractRunner
 from testrunner.runners.pytest_runner import PyTestRunner
 from testrunner.runners.setup_py_runner import SetupPyRunner
-from testrunner.utils.preconditions import IllegalStateException
 
 
 class RunnerType(Enum):

@@ -1,2 +1,3 @@
 virtualenv
 plumbum
+pytesting-utils

@@ -20,10 +20,11 @@ import tempfile
 import unittest
 from unittest import mock
 
+from pytesting_utils import IllegalStateException
+
+from testrunner.runner import Runner, RunnerType
 from testrunner.runners.pytest_runner import PyTestRunner
 from testrunner.runners.setup_py_runner import SetupPyRunner
-from testrunner.runner import Runner, RunnerType
-from testrunner.utils.preconditions import IllegalStateException
 
 
 class TestRunner(unittest.TestCase):

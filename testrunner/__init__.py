@@ -15,11 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 from testrunner.runner import Runner, RunnerType  # noqa: F401
-from testrunner.utils.preconditions import (  # noqa: F401
-    IllegalArgumentException,
-    IllegalStateException,
-    NoneValueException,
-)
 
 __version__ = "0.2.dev1"
 __name__ = "test-runner"

@@ -18,7 +18,7 @@ import os
 from abc import ABCMeta, abstractmethod
 from typing import Union, List, Optional, Tuple, Dict, Any
 
-from testrunner.utils.preconditions import Preconditions
+from pytesting_utils import Preconditions
 
 
 class AbstractRunner(metaclass=ABCMeta):
