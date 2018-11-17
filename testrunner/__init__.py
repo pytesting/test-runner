@@ -16,6 +16,6 @@
 # along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 from testrunner.runner import Runner, RunnerType  # noqa: F401
 
-__version__ = "0.2.dev1"
+__version__ = "0.3.dev0"
 __name__ = "test-runner"
 __author__ = "Stephan Lukasczyk"
