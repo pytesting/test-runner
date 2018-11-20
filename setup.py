@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-# This file is part of test-runner.
-#
-# test-runner is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# test-runner is distributed in the hope that it will be useful
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with test-runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 from setuptools import setup, find_packages
@@ -55,15 +40,15 @@ setup(
     description="A small test runner library for Python testing",
     long_description=long_description,
     url="https://github.com/pytesting/test-runner",
-    license="GNU General Public License (GPLv3)",
+    license="GNU Lesser General Public License (LGPLv3)",
     keywords="test runner unittest nose pytest",
     classifiers=[
         "Development Status :: 1 - Planning",
         "Intended Audience :: Developers",
         "Intended Audience :: Education",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: GNU General Public License v3 or later ("
-        "GPLv3+)",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 or "
+        "later (LGPLv3+)",
         "Operating System :: MacOS",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX",
