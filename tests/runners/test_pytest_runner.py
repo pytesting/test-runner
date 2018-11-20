@@ -4,7 +4,7 @@ import shutil
 import tempfile
 import unittest
 from git import Repo
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from unittest import mock
 from unittest.mock import MagicMock
 
@@ -195,6 +195,57 @@ TOTAL                              39      5    87%
 
     def test_get_passed_result_fail(self):
         self.assertIsNone(self._dummy_runner.get_summary_result(""))
+
+    def test_integration_pytesting_utils(self):
+        repo = self._clone_repo_for_integration("pytesting", "utils")
+        r = PyTestRunner("utils", repo)
+        result, _ = r.run()
+        statements, missing, coverage = r.get_total_result(result)
+        self.assertGreater(statements, 0)
+        self.assertGreaterEqual(missing, 0)
+        self.assertGreater(int(coverage[:-1]), 0)
+        self._clean_from_integration(repo)
+
+    def test_integration_syncasync(self):
+        repo = self._clone_repo_for_integration("w1z2g3", "syncasync")
+        r = PyTestRunner("syncasync", repo)
+        result, _ = r.run()
+        statements, missing, coverage = r.get_total_result(result)
+        self.assertGreater(statements, 0)
+        self.assertGreaterEqual(missing, 0)
+        self.assertGreater(int(coverage[:-1]), 0)
+        self._clean_from_integration(repo)
+
+    def test_integration_weightedstats(self):
+        repo = self._clone_repo_for_integration("tinybike", "weightedstats")
+        r = PyTestRunner("weightedstats", repo)
+        result, _ = r.run()
+        statements, missing, coverage = r.get_total_result(result)
+        self.assertGreater(statements, 0)
+        self.assertGreaterEqual(missing, 0)
+        self.assertGreater(int(coverage[:-1]), 0)
+        self._clean_from_integration(repo)
+
+    def test_integration_extra_context_py(self):
+        repo = self._clone_repo_for_integration("WanzenBug", "extra-context-py")
+        r = PyTestRunner("extra-context-py", repo)
+        result, _ = r.run()
+        statements, missing, coverage = r.get_total_result(result)
+        self.assertGreater(statements, 0)
+        self.assertGreaterEqual(missing, 0)
+        self.assertGreater(int(coverage[:-1]), 0)
+        self._clean_from_integration(repo)
+
+    @staticmethod
+    def _clone_repo_for_integration(user: str, repo: str) -> Union[bytes, str]:
+        tmp_dir = tempfile.mkdtemp()
+        url = "https://github.com/{}/{}".format(user, repo)
+        Repo.clone_from(url, tmp_dir)
+        return tmp_dir
+
+    @staticmethod
+    def _clean_from_integration(directory: Union[bytes, str]) -> None:
+        shutil.rmtree(directory)
 
 
 if __name__ == "__main__":
