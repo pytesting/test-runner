@@ -41,7 +41,10 @@ class PyTestRunner(AbstractRunner):
                     for o in os.listdir(os.getcwd())
                     if os.path.isdir(os.path.join(os.getcwd(), o))
                 ]
-                project_name = self._project_name
+                if len(directories) > 1:
+                    project_name = self._project_name
+                else:
+                    project_name = "."
                 for d in directories:
                     if self._project_name in d:
                         project_name = d
