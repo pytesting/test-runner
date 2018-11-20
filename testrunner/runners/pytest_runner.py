@@ -33,8 +33,19 @@ class PyTestRunner(AbstractRunner):
                 os.path.join(os.getcwd(), self._project_name.replace("-", "_"))
             ):
                 project_name = self._project_name.replace("-", "_")
-            else:
+            elif os.path.exists(os.path.join(os.getcwd(), self._project_name)):
                 project_name = self._project_name
+            else:
+                directories = [
+                    o
+                    for o in os.listdir(os.getcwd())
+                    if os.path.isdir(os.path.join(os.getcwd(), o))
+                ]
+                project_name = self._project_name
+                for d in directories:
+                    if self._project_name in d:
+                        project_name = d
+                        break
 
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)

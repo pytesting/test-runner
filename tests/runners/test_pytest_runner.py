@@ -222,7 +222,7 @@ TOTAL                              39      5    87%
 
     def test_integration_pytesting_utils(self):
         repo = self._clone_repo_for_integration("pytesting", "utils")
-        r = PyTestRunner("pytesting_utils", repo)  # Change project name...
+        r = PyTestRunner("utils", repo)
         result, _ = r.run()
         statements, missing, coverage = r.get_total_result(result)
         self.assertGreater(statements, 0)
