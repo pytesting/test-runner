@@ -34,9 +34,13 @@ class AbstractRunner(metaclass=ABCMeta):
         file_names = [
             "requirements.txt",
             "dev-requirements.txt",
+            "dev_requirements.txt",
             "test-requirements.txt",
+            "test_requirements.txt",
             "requirements-dev.txt",
+            "requirements_dev.txt",
             "requirements-test.txt",
+            "requirements_test.txt",
         ]
         for file_name in file_names:
             packages.extend(
