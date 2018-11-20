@@ -196,6 +196,7 @@ TOTAL                              39      5    87%
     def test_get_passed_result_fail(self):
         self.assertIsNone(self._dummy_runner.get_summary_result(""))
 
+    @unittest.skip("Does not run in virtual env either")
     def test_integration_hdx_python_utils(self):
         repo = self._clone_repo_for_integration(
             "ocha-dap", "hdx-python-utilities"
@@ -208,6 +209,7 @@ TOTAL                              39      5    87%
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
+    @unittest.skip("Does not run in virtual env either")
     def test_integration_python_dotenv(self):
         repo = self._clone_repo_for_integration("theskumar", "python-dotenv")
         r = PyTestRunner("python-dotenv", repo)
