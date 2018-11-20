@@ -219,7 +219,7 @@ TOTAL                              39      5    87%
         result, _ = r.run()
         statements, missing, coverage = r.get_total_result(result)
         self.assertGreater(statements, 0)
-        self.assertGreater(missing, 0)
+        self.assertGreaterEqual(missing, 0)
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
@@ -229,7 +229,7 @@ TOTAL                              39      5    87%
         result, _ = r.run()
         statements, missing, coverage = r.get_total_result(result)
         self.assertGreater(statements, 0)
-        self.assertGreater(missing, 0)
+        self.assertGreaterEqual(missing, 0)
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
@@ -239,7 +239,7 @@ TOTAL                              39      5    87%
         result, _ = r.run()
         statements, missing, coverage = r.get_total_result(result)
         self.assertGreater(statements, 0)
-        self.assertGreater(missing, 0)
+        self.assertGreaterEqual(missing, 0)
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
@@ -249,7 +249,7 @@ TOTAL                              39      5    87%
         result, _ = r.run()
         statements, missing, coverage = r.get_total_result(result)
         self.assertGreater(statements, 0)
-        self.assertGreater(missing, 0)
+        self.assertGreaterEqual(missing, 0)
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
@@ -259,7 +259,7 @@ TOTAL                              39      5    87%
         result, _ = r.run()
         statements, missing, coverage = r.get_total_result(result)
         self.assertGreater(statements, 0)
-        self.assertGreater(missing, 0)
+        self.assertGreaterEqual(missing, 0)
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
@@ -269,7 +269,7 @@ TOTAL                              39      5    87%
         result, _ = r.run()
         statements, missing, coverage = r.get_total_result(result)
         self.assertGreater(statements, 0)
-        self.assertGreater(missing, 0)
+        self.assertGreaterEqual(missing, 0)
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
