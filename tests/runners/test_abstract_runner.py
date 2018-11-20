@@ -55,6 +55,16 @@ class AbstractRunnerTest(unittest.TestCase):
         self.assertTrue("bar" in result)
         self.assertTrue("baz" in result)
 
+    @patch.multiple(AbstractRunner, __abstractmethods__=set())
+    def test_string_representation(self):
+        runner = AbstractRunner("foo", self._tmp_dir)
+        result = runner.__str__()
+        expected = (
+            "Runner for project foo in path {} (type "
+            "AbstractRunner)".format(self._tmp_dir)
+        )
+        self.assertEqual(expected, result)
+
 
 if __name__ == "__main__":
     unittest.main()

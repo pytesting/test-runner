@@ -60,3 +60,11 @@ class AbstractRunner(metaclass=ABCMeta):
                         continue
                     packages.append(line.strip())
         return packages
+
+    def __str__(self) -> str:
+        return "Runner for project {} in path {} (type {})".format(
+            self._project_name, self._path, type(self).__name__
+        )
+
+    def __repr__(self) -> str:
+        return self.__str__()
