@@ -65,6 +65,66 @@ class AbstractRunnerTest(unittest.TestCase):
         )
         self.assertEqual(expected, result)
 
+    @patch.multiple(AbstractRunner, __abstractmethods__=set())
+    def test_extract_packages_from_empty_pipfile(self):
+        with open(os.path.join(self._tmp_dir, "Pipfile"), "w") as f:
+            f.write(
+                """
+[scripts]
+tests = "bash ./run-tests.sh"
+            """
+            )
+
+        runner = AbstractRunner("foo", self._tmp_dir)
+        result = runner._extract_packages_from_pipfile()
+        self.assertListEqual([], result)
+
+    @patch.multiple(AbstractRunner, __abstractmethods__=set())
+    def test_extract_packages_from_pipfile(self):
+        with open(os.path.join(self._tmp_dir, "Pipfile"), "w") as f:
+            f.write(
+                """[packages]
+mock = "*"
+sphinx = "<=1.5.5"
+            """
+            )
+
+        runner = AbstractRunner("foo", self._tmp_dir)
+        result = runner._extract_packages_from_pipfile()
+        self.assertListEqual(["mock", "sphinx"], result)
+
+    @patch.multiple(AbstractRunner, __abstractmethods__=set())
+    def test_extract_dev_packages_from_pipfile(self):
+        with open(os.path.join(self._tmp_dir, "Pipfile"), "w") as f:
+            f.write(
+                """[dev-packages]
+"flake8" = ">=3.3.0,<4"
+pipenv = {path = ".", editable = true}
+            """
+            )
+
+        runner = AbstractRunner("foo", self._tmp_dir)
+        result = runner._extract_packages_from_pipfile()
+        self.assertListEqual(["flake8", "pipenv"], result)
+
+    @patch.multiple(AbstractRunner, __abstractmethods__=set())
+    def test_extract_all_packages_from_pipfile(self):
+        with open(os.path.join(self._tmp_dir, "Pipfile"), "w") as f:
+            f.write(
+                """[dev-packages]
+"flake8" = ">=3.3.0,<4"
+pipenv = {path = ".", editable = true}
+
+[packages]
+mock = "*"
+sphinx = "<=1.5.5"
+            """
+            )
+
+        runner = AbstractRunner("foo", self._tmp_dir)
+        result = runner._extract_packages_from_pipfile()
+        self.assertListEqual(["mock", "sphinx", "flake8", "pipenv"], result)
+
 
 if __name__ == "__main__":
     unittest.main()
