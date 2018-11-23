@@ -236,6 +236,28 @@ TOTAL                              39      5    87%
         self.assertGreater(int(coverage[:-1]), 0)
         self._clean_from_integration(repo)
 
+    def test_integration_hdx_python_utils(self):
+        repo = self._clone_repo_for_integration(
+            "ocha-dap", "hdx-python-utilities"
+        )
+        r = PyTestRunner("hdx-python-utilities", repo)
+        result, _ = r.run()
+        statements, missing, coverage = r.get_total_result(result)
+        self.assertGreater(statements, 0)
+        self.assertGreaterEqual(missing, 0)
+        self.assertGreater(int(coverage[:-1]), 0)
+        self._clean_from_integration(repo)
+
+    def test_integration_python_dotenv(self):
+        repo = self._clone_repo_for_integration("theskumar", "python-dotenv")
+        r = PyTestRunner("python-dotenv", repo)
+        result, _ = r.run()
+        statements, missing, coverage = r.get_total_result(result)
+        self.assertGreater(statements, 0)
+        self.assertGreaterEqual(missing, 0)
+        self.assertGreater(int(coverage[:-1]), 0)
+        self._clean_from_integration(repo)
+
     @staticmethod
     def _clone_repo_for_integration(user: str, repo: str) -> Union[bytes, str]:
         tmp_dir = tempfile.mkdtemp()

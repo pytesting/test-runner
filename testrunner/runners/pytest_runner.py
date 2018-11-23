@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import re
+from setuptools import find_packages
 from typing import Union, Optional, Tuple, Dict, Any
 
 from pytesting_utils import virtualenv
@@ -36,19 +37,14 @@ class PyTestRunner(AbstractRunner):
             elif os.path.exists(os.path.join(os.getcwd(), self._project_name)):
                 project_name = self._project_name
             else:
-                directories = [
-                    o
-                    for o in os.listdir(os.getcwd())
-                    if os.path.isdir(os.path.join(os.getcwd(), o))
-                ]
-                if len(directories) > 2:
-                    project_name = self._project_name
-                else:
-                    project_name = "."
-                for d in directories:
-                    if self._project_name in d:
-                        project_name = d
-                        break
+                directories = find_packages(".", exclude=["test", "tests"])
+                if len(directories) == 0 and os.path.exists(
+                    os.path.join(os.getcwd(), "src")
+                ):
+                    directories = find_packages(
+                        "src", exclude=["test", "tests"]
+                    )
+                project_name = directories[0] if len(directories) > 1 else "."
 
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
