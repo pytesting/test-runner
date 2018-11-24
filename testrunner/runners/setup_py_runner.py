@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from typing import Union, Optional, Tuple, Dict, Any
+from typing import Union, Optional, Tuple
 
 from pytesting_utils import virtualenv
 
@@ -26,12 +26,6 @@ class SetupPyRunner(AbstractRunner):
             out, err = env.run_commands(["python setup.py test"])
             os.chdir(old_dir)
             return out, err
-
-    def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
-        raise NotImplementedError("Implement me!")
-
-    def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
-        raise NotImplementedError("Implement me!")
 
     def get_run_result(self, log: str) -> RunResult:
         raise NotImplementedError("Implement me!")

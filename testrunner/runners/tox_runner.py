@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from typing import Union, Optional, Tuple, Dict, Any
+from typing import Union, Optional, Tuple
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 
@@ -12,12 +12,6 @@ class ToxRunner(AbstractRunner):
         super().__init__(project_name, path)  # pragma: no cover
 
     def run(self) -> Optional[Tuple[str, str]]:
-        pass  # pragma: no cover
-
-    def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
-        pass  # pragma: no cover
-
-    def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
         pass  # pragma: no cover
 
     def get_run_result(self, log: str) -> RunResult:

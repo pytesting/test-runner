@@ -2,6 +2,7 @@
 import shutil
 import tempfile
 import unittest
+
 from git import Repo
 
 from testrunner.runners.tox_runner import ToxRunner
@@ -20,10 +21,10 @@ class ToxRunnerTest(unittest.TestCase):
         Repo.clone_from(url, self._tmp_dir)
         runner = ToxRunner("zula", self._tmp_dir)
         out, err = runner.run()
-        statements, missing, coverage = runner.get_total_result(out)
-        self.assertGreater(statements, 0)
-        self.assertGreaterEqual(missing, 0)
-        self.assertGreater(int(coverage[:-1]), 0)
+        result = runner.get_run_result(out)
+        self.assertGreater(result.statements, 0)
+        self.assertGreaterEqual(result.missing, 0)
+        self.assertGreater(result.coverage, 0)
 
     @unittest.skip("Skip test until runner is implemented")
     def test_integration_ratelimitqueue(self):
@@ -31,10 +32,10 @@ class ToxRunnerTest(unittest.TestCase):
         Repo.clone_from(url, self._tmp_dir)
         runner = ToxRunner("ratelimitqueue", self._tmp_dir)
         out, err = runner.run()
-        statements, missing, coverage = runner.get_total_result(out)
-        self.assertGreater(statements, 0)
-        self.assertGreaterEqual(missing, 0)
-        self.assertGreater(int(coverage[:-1]), 0)
+        result = runner.get_run_result(out)
+        self.assertGreater(result.statements, 0)
+        self.assertGreaterEqual(result.missing, 0)
+        self.assertGreater(result.coverage, 0)
 
 
 if __name__ == "__main__":

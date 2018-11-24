@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 from abc import ABCMeta, abstractmethod
-from typing import Union, List, Optional, Tuple, Dict, Any
+from typing import Union, List, Optional, Tuple
 
 import attr
 import pipfile
-from deprecated import deprecated
 from pytesting_utils import Preconditions
 
 
@@ -35,22 +34,6 @@ class AbstractRunner(metaclass=ABCMeta):
 
     @abstractmethod
     def run(self) -> Optional[Tuple[str, str]]:
-        pass  # pragma: no cover
-
-    @abstractmethod
-    @deprecated(
-        version="0.4.dev4",
-        reason="Use get_run_result() instead, it provides a better API",
-    )
-    def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
-        pass  # pragma: no cover
-
-    @abstractmethod
-    @deprecated(
-        version="0.4.dev4",
-        reason="Use get_run_result() instead, it provides a better API",
-    )
-    def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
         pass  # pragma: no cover
 
     @abstractmethod
