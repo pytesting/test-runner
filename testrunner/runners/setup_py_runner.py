@@ -4,7 +4,7 @@ from typing import Union, Optional, Tuple, Dict, Any
 
 from pytesting_utils import virtualenv
 
-from testrunner.runners.abstract_runner import AbstractRunner
+from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 
 
 class SetupPyRunner(AbstractRunner):
@@ -31,4 +31,7 @@ class SetupPyRunner(AbstractRunner):
         raise NotImplementedError("Implement me!")
 
     def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
+        raise NotImplementedError("Implement me!")
+
+    def get_run_result(self, log: str) -> RunResult:
         raise NotImplementedError("Implement me!")

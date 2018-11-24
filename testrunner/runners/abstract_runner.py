@@ -1,10 +1,25 @@
 # -*- coding: utf-8 -*-
 import os
-import pipfile
 from abc import ABCMeta, abstractmethod
 from typing import Union, List, Optional, Tuple, Dict, Any
 
+import attr
+import pipfile
+from deprecated import deprecated
 from pytesting_utils import Preconditions
+
+
+@attr.s
+class RunResult(object):
+    statements: int = attr.ib(default=-1)
+    missing: int = attr.ib(default=-1)
+    coverage: float = attr.ib(default=-1.0)
+    failed: int = attr.ib(default=-1)
+    passed: int = attr.ib(default=-1)
+    skipped: int = attr.ib(default=-1)
+    warnings: int = attr.ib(default=-1)
+    error: int = attr.ib(default=-1)
+    time: float = attr.ib(default=-1.0)
 
 
 class AbstractRunner(metaclass=ABCMeta):
@@ -23,11 +38,23 @@ class AbstractRunner(metaclass=ABCMeta):
         pass  # pragma: no cover
 
     @abstractmethod
+    @deprecated(
+        version="0.4.dev4",
+        reason="Use get_run_result() instead, it provides a better API",
+    )
     def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
         pass  # pragma: no cover
 
     @abstractmethod
+    @deprecated(
+        version="0.4.dev4",
+        reason="Use get_run_result() instead, it provides a better API",
+    )
     def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
+        pass  # pragma: no cover
+
+    @abstractmethod
+    def get_run_result(self, log: str) -> RunResult:
         pass  # pragma: no cover
 
     def _extract_necessary_packages(self) -> List[str]:

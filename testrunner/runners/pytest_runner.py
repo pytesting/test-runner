@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from setuptools import find_packages
 from typing import Union, Optional, Tuple, Dict, Any
 
+from deprecated import deprecated
 from pytesting_utils import virtualenv
+from setuptools import find_packages
 
-from testrunner.runners.abstract_runner import AbstractRunner
+from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 
 
 class PyTestRunner(AbstractRunner):
@@ -60,6 +61,10 @@ class PyTestRunner(AbstractRunner):
             os.chdir(old_dir)
             return out, err
 
+    @deprecated(
+        version="0.4.dev4",
+        reason="Use get_run_result() instead, it provides a better API",
+    )
     def get_total_result(self, log: str) -> Optional[Tuple[int, int, str]]:
         matches = re.search(
             r"TOTAL\s+"
@@ -90,6 +95,10 @@ class PyTestRunner(AbstractRunner):
                 return statements, missing, coverage
         return None
 
+    @deprecated(
+        version="0.4.dev4",
+        reason="Use get_run_result() instead, it provides a better API",
+    )
     def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
         matches = re.search(
             r"[=]+ (([0-9]+) failed, )?"
@@ -110,3 +119,72 @@ class PyTestRunner(AbstractRunner):
                 "time": float(matches.group(10)) if matches.group(10) else 0.0,
             }
         return None
+
+    def get_run_result(self, log: str) -> RunResult:
+        statements = -1
+        missing = -1
+        coverage = -1.0
+        failed = -1
+        passed = -1
+        skipped = -1
+        warnings = -1
+        error = -1
+        time = -1.0
+
+        matches = re.search(
+            r"[=]+ (([0-9]+) failed, )?"
+            r"([0-9]+) passed"
+            r"(, ([0-9]+) skipped)?"
+            r"(, ([0-9]+) warnings)?"
+            r"(, ([0-9]+) error)?"
+            r" in ([0-9.]+) seconds",
+            log,
+        )
+        if matches:
+            failed = int(matches.group(2)) if matches.group(2) else 0
+            passed = int(matches.group(3)) if matches.group(3) else 0
+            skipped = int(matches.group(5)) if matches.group(5) else 0
+            warnings = int(matches.group(7)) if matches.group(7) else 0
+            error = int(matches.group(9)) if matches.group(9) else 0
+            time = float(matches.group(10)) if matches.group(10) else 0.0
+
+        matches = re.search(
+            r"TOTAL\s+"
+            r"([0-9]+)\s+"
+            r"([0-9]+)\s+"
+            r"(([0-9]+)\s+([0-9]+)\s+)?"
+            r"([0-9]+%)",
+            log,
+        )
+        if matches:
+            statements = int(matches.group(1)) if matches.group(1) else 0
+            missing = int(matches.group(2)) if matches.group(2) else 0
+            coverage = float(matches.group(6)[:-1]) if matches.group(6) else 0.0
+        else:
+            matches = re.search(
+                r".py\s+"
+                r"([0-9]+)\s+"
+                r"([0-9]+)\s+"
+                r"(([0-9]+)\s+([0-9]+)\s+)?"
+                r"([0-9]+%)",
+                log,
+            )
+            if matches:
+                statements = int(matches.group(1)) if matches.group(1) else 0
+                missing = int(matches.group(2)) if matches.group(2) else 0
+                coverage = (
+                    float(matches.group(6)[:-1]) if matches.group(6) else 0.0
+                )
+
+        result = RunResult(
+            statements=statements,
+            missing=missing,
+            coverage=coverage,
+            failed=failed,
+            passed=passed,
+            skipped=skipped,
+            warnings=warnings,
+            error=error,
+            time=time,
+        )
+        return result

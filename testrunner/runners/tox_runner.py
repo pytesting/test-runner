@@ -2,7 +2,7 @@
 import os
 from typing import Union, Optional, Tuple, Dict, Any
 
-from testrunner.runners.abstract_runner import AbstractRunner
+from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 
 
 class ToxRunner(AbstractRunner):
@@ -18,4 +18,7 @@ class ToxRunner(AbstractRunner):
         pass  # pragma: no cover
 
     def get_summary_result(self, log: str) -> Optional[Dict[str, Any]]:
+        pass  # pragma: no cover
+
+    def get_run_result(self, log: str) -> RunResult:
         pass  # pragma: no cover
