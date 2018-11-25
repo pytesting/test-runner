@@ -7,6 +7,7 @@ from unittest import mock
 
 from pytesting_utils import IllegalStateException
 
+from testrunner import RunResult
 from testrunner.runner import Runner, RunnerType
 from testrunner.runners.pytest_runner import PyTestRunner
 from testrunner.runners.setup_py_runner import SetupPyRunner
@@ -46,31 +47,24 @@ class TestRunner(unittest.TestCase):
             MockHelper.assert_called_once()
             self.assertEqual(("foo", "bar"), result)
 
-    def test_get_total_result(self):
+    def test_get_run_result(self):
         with mock.patch("testrunner.runner.PyTestRunner") as MockHelper:
-            MockHelper.return_value.get_total_result.return_value = (
-                23,
-                42,
-                "foo",
+            run_result = RunResult(
+                statements=42,
+                missing=23,
+                coverage=53.23,
+                failed=0,
+                skipped=2,
+                passed=6,
+                warnings=0,
+                error=1,
+                time=42.23,
             )
+            MockHelper.return_value.get_run_result.return_value = run_result
             runner = Runner("test", "test", RunnerType.PYTEST)
-            result = runner.get_total_result("bar")
+            result = runner.get_run_result("bar")
             MockHelper.assert_called_once()
-            self.assertEqual((23, 42, "foo"), result)
-
-    def test_get_summary_result(self):
-        with mock.patch("testrunner.runner.PyTestRunner") as MockHelper:
-            MockHelper.return_value.get_summary_result.return_value = {
-                "failed": 0,
-                "passed": 8,
-                "skipped": 15,
-                "time": 23.42,
-            }
-            runner = Runner("test", "test", RunnerType.PYTEST)
-            result = runner.get_summary_result("bar")
-            MockHelper.assert_called_once()
-            r = {"failed": 0, "passed": 8, "skipped": 15, "time": 23.42}
-            self.assertEqual(r, result)
+            self.assertEqual(run_result, result)
 
     def test_is_not_pytest(self):
         runner = Runner("test", self._pytest_dir, RunnerType.PYTEST)
