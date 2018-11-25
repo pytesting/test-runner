@@ -6,7 +6,7 @@ from typing import Union, Tuple, Optional, Dict, Any
 from plumbum import local
 from pytesting_utils import IllegalStateException
 
-from testrunner.runners.abstract_runner import AbstractRunner
+from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 from testrunner.runners.pytest_runner import PyTestRunner
 from testrunner.runners.setup_py_runner import SetupPyRunner
 
@@ -130,8 +130,11 @@ class Runner(object):
         """
         return self._runner.run()
 
-    def get_total_result(self, result: str) -> Optional[Tuple[int, int, str]]:
-        return self._runner.get_total_result(result)
+    def get_run_result(self, result: str) -> RunResult:
+        """
+        Parses the run results from a result string created by the run method.
 
-    def get_summary_result(self, result: str) -> Optional[Dict[str, Any]]:
-        return self._runner.get_summary_result(result)
+        :param result: The output of the run method
+        :return: A run-result object containing the extracted information
+        """
+        return self._runner.get_run_result(result)
