@@ -18,11 +18,7 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
 """
-__all__ = [
-    "Runner",
-    "RunnerType",
-    "RunResult",
-]
+__all__ = ["Runner", "RunnerType", "RunResult"]
 from testrunner.runner import Runner, RunnerType  # noqa: F401
 from testrunner.runners.abstract_runner import RunResult  # noqa: F401
 
