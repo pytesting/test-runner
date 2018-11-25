@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from enum import Enum, auto
-from typing import Union, Tuple, Optional, Dict, Any
+from typing import Union, Tuple
 
 from plumbum import local
 from pytesting_utils import IllegalStateException
