@@ -23,11 +23,7 @@ class ToxRunner(AbstractRunner):  # pragma: no cover
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
             env.add_package_for_installation("tox")
-            out, err = env.run_commands(
-                [
-                    "tox"
-                ]
-            )
+            out, err = env.run_commands(["tox"])
             os.chdir(old_dir)
             return out, err
 
@@ -42,10 +38,7 @@ class ToxRunner(AbstractRunner):  # pragma: no cover
         error = -1
         time = -1.0
 
-        matches = re.search(
-            r"([0-9]+) passed in ([0-9.]+) seconds",
-            log
-        )
+        matches = re.search(r"([0-9]+) passed in ([0-9.]+) seconds", log)
 
         if matches:
             passed = int(matches.group(1)) if matches.group(1) else 0
