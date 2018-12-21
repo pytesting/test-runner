@@ -7,6 +7,8 @@ from plumbum import local
 from pytesting_utils import IllegalStateException
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult
+from testrunner.runners.nose2_runner import Nose2Runner
+from testrunner.runners.nose_runner import NoseRunner
 from testrunner.runners.pytest_runner import PyTestRunner
 from testrunner.runners.setup_py_runner import SetupPyRunner
 
@@ -23,6 +25,12 @@ class RunnerType(Enum):
 
     SETUP_PY = auto()
     """Use setup.py test as runner."""
+
+    NOSE = auto()
+    """Use the nose runner."""
+
+    NOSE2 = auto()
+    """Use the nose2 runner."""
 
     _UNKNOWN = auto()
 
@@ -58,6 +66,10 @@ class Runner(object):
     def _detect_runner_type(self) -> RunnerType:
         if self._is_pytest():
             return RunnerType.PYTEST
+        elif self._is_nose2():
+            return RunnerType.NOSE2
+        elif self._is_nose():
+            return RunnerType.NOSE
         elif self._is_setup_py():
             return RunnerType.SETUP_PY
         return RunnerType._UNKNOWN  # pragma: no cover
@@ -67,6 +79,10 @@ class Runner(object):
             runner = PyTestRunner(self._project_name, self._repo_path)
         elif self._runner_type == RunnerType.SETUP_PY:
             runner = SetupPyRunner(self._project_name, self._repo_path)
+        elif self._runner_type == RunnerType.NOSE:
+            runner = NoseRunner(self._project_name, self._repo_path)
+        elif self._runner_type == RunnerType.NOSE2:
+            runner = Nose2Runner(self._project_name, self._repo_path)
         else:
             raise IllegalStateException("Could not find a matching runner!")
         return runner
@@ -108,6 +124,28 @@ class Runner(object):
         if len(r) > 0:
             return True
 
+        return False
+
+    def _is_nose2(self) -> bool:
+        if os.path.exists(
+            os.path.join(self._repo_path, "setup.py")
+        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
+            _, r, _ = self._grep[
+                "nose2", os.path.join(self._repo_path, "setup.py")
+            ].run(retcode=None)
+            if len(r) > 0:
+                return True
+        return False
+
+    def _is_nose(self) -> bool:
+        if os.path.exists(
+            os.path.join(self._repo_path, "setup.py")
+        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
+            _, r, _ = self._grep[
+                "nose", os.path.join(self._repo_path, "setup.py")
+            ].run(retcode=None)
+            if len(r) > 0:
+                return True
         return False
 
     def _is_setup_py(self) -> bool:
