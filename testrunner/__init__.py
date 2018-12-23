@@ -22,6 +22,6 @@ __all__ = ["Runner", "RunnerType", "RunResult"]
 from testrunner.runner import Runner, RunnerType  # noqa: F401
 from testrunner.runners.abstract_runner import RunResult  # noqa: F401
 
-__version__ = "0.4.dev4"
+__version__ = "0.4.dev5"
 __name__ = "test-runner"
 __author__ = "Stephan Lukasczyk"
