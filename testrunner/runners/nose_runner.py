@@ -11,9 +11,13 @@ from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 
 class NoseRunner(AbstractRunner):
     def __init__(
-        self, project_name: str, path: Union[bytes, str, os.PathLike]
+        self,
+        project_name: str,
+        path: Union[bytes, str, os.PathLike],
+        time_limit: int = 0,
     ) -> None:
         super().__init__(project_name, path)
+        self._time_limit = time_limit
 
     def run(self):
 
@@ -24,9 +28,20 @@ class NoseRunner(AbstractRunner):
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
             env.add_package_for_installation("nose")
-            out, err = env.run_commands(
-                ["nosetests --with-coverage --cover-erase"]
-            )
+            env.add_package_for_installation("benchexec")
+
+            if self._time_limit > 0:
+                command = "runexec --timelimit={}s -- ".format(self._time_limit)
+            else:
+                command = "runexec -- "
+            command += "nosetests --with-coverage --cover-erase"
+            out, err = env.run_commands([command])
+            if os.path.exists(
+                os.path.join(os.getcwd(), "output.log")
+            ) and os.path.isfile(os.path.join(os.getcwd(), "output.log")):
+                with open(os.path.join(os.getcwd(), "output.log")) as f:
+                    out += "\n".join(f.readlines())
+
             os.chdir(old_dir)
             return out, err
 

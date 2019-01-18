@@ -4,3 +4,4 @@ pytesting-utils
 pipfile
 attr
 deprecated
+benchexec
