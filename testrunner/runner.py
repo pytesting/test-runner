@@ -4,7 +4,7 @@ from enum import Enum, auto
 from typing import Union, Tuple
 
 from plumbum import local
-from pytesting_utils import IllegalStateException
+from pytesting_utils import IllegalStateException, Preconditions
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 from testrunner.runners.nose2_runner import Nose2Runner
@@ -45,6 +45,7 @@ class Runner(object):
         project_name: str,
         repo_path: Union[bytes, str, os.PathLike],
         runner: RunnerType = RunnerType.AUTO_DETECT,
+        time_limit: int = 0,
     ) -> None:
         """
         Creates a new runner for tests.
@@ -52,9 +53,14 @@ class Runner(object):
         :param project_name: The name of the project
         :param repo_path: Path to the project's source code
         :param runner: The RunnerType that should be used
+        :param time_limit: An optional time limit for the execution (in seconds)
         """
+        Preconditions.check_argument(
+            time_limit >= 0, "A specified time limit has to be at least 0!"
+        )
         self._project_name = project_name
         self._repo_path = repo_path
+        self._time_limit = time_limit
         self._grep = local["grep"]
 
         if runner != RunnerType.AUTO_DETECT:
@@ -76,13 +82,21 @@ class Runner(object):
 
     def _instantiate_runner(self) -> AbstractRunner:
         if self._runner_type == RunnerType.PYTEST:
-            runner = PyTestRunner(self._project_name, self._repo_path)
+            runner = PyTestRunner(
+                self._project_name, self._repo_path, self._time_limit
+            )
         elif self._runner_type == RunnerType.SETUP_PY:
-            runner = SetupPyRunner(self._project_name, self._repo_path)
+            runner = SetupPyRunner(
+                self._project_name, self._repo_path, self._time_limit
+            )
         elif self._runner_type == RunnerType.NOSE:
-            runner = NoseRunner(self._project_name, self._repo_path)
+            runner = NoseRunner(
+                self._project_name, self._repo_path, self._time_limit
+            )
         elif self._runner_type == RunnerType.NOSE2:
-            runner = Nose2Runner(self._project_name, self._repo_path)
+            runner = Nose2Runner(
+                self._project_name, self._repo_path, self._time_limit
+            )
         else:
             raise IllegalStateException("Could not find a matching runner!")
         return runner

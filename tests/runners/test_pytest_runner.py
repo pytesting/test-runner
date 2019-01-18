@@ -33,7 +33,7 @@ class PyTestRunnerTest(unittest.TestCase):
         self._dummy_dir = tempfile.mkdtemp()
         url = "https://github.com/audreyr/standardjson"
         self._repo = Repo.clone_from(url, self._tmp_dir)
-        self._runner = PyTestRunner("standardjson", self._tmp_dir)
+        self._runner = PyTestRunner("standardjson", self._tmp_dir, 42)
         self._dummy_runner = PyTestRunner("test", "test")
         self._output = """
 ----------- coverage: platform linux, python 3.7.0-final-0 -----------
