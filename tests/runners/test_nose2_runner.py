@@ -15,35 +15,32 @@ class NoseRunnerTest(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self._tmp_dir)
 
-    @unittest.skip("Needs to be fixed")
     def test_integration_zula(self):
         url = "https://github.com/efe/zula"
         Repo.clone_from(url, self._tmp_dir)
         runner = Nose2Runner("zula", self._tmp_dir)
         out, err = runner.run()
-        result = runner.get_run_result(err)
+        result = runner.get_run_result(out)
         self.assertGreater(result.statements, 0)
         self.assertGreaterEqual(result.missing, 0)
         self.assertGreater(result.coverage, 0)
 
-    @unittest.skip("Needs to be fixed")
     def test_integration_ratelimitqueue(self):
         url = "https://github.com/JohnPaton/ratelimitqueue"
         Repo.clone_from(url, self._tmp_dir)
         runner = Nose2Runner("ratelimitqueue", self._tmp_dir)
         out, err = runner.run()
-        result = runner.get_run_result(err)
+        result = runner.get_run_result(out)
         self.assertGreater(result.statements, 0)
         self.assertGreaterEqual(result.missing, 0)
         self.assertGreater(result.coverage, 0)
 
-    @unittest.skip("Needs to be fixed")
     def test_integration_extra_context_py(self):
         url = "https://github.com/WanzenBug/extra-context-py"
         Repo.clone_from(url, self._tmp_dir)
         runner = Nose2Runner("extra-context-py", self._tmp_dir)
         out, err = runner.run()
-        result = runner.get_run_result(err)
+        result = runner.get_run_result(out)
         self.assertGreater(result.statements, 0)
         self.assertGreater(result.missing, 0)
         self.assertGreater(result.coverage, 0)
