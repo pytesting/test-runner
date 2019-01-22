@@ -35,7 +35,7 @@ class Nose2Runner(AbstractRunner):
                 command = "runexec --timelimit={}s -- ".format(self._time_limit)
             else:
                 command = "runexec -- "
-            command += "nose2 --with-coverage"
+            command += "nose2 --with-coverage --verbose"
             out, err = env.run_commands([command])
             if os.path.exists(
                 os.path.join(os.getcwd(), "output.log")
@@ -60,8 +60,29 @@ class Nose2Runner(AbstractRunner):
         matches = re.search(r"Ran ([0-9]+) tests in ([0-9.]+)s", log)
 
         if matches:
-            passed = int(matches.group(1)) if matches.group(1) else 0
+            ran = int(matches.group(1)) if matches.group(1) else 0
             time = float(matches.group(2)) if matches.group(2) else 0.0
+            passed = ran
+
+        matches = re.search(r"failures=([0-9]+)", log)
+        if matches:
+            failed = int(matches.group(1)) if matches.group(1) else 0
+            passed -= failed
+
+        matches = re.search(r"errors=([0-9]+)", log)
+        if matches:
+            error = int(matches.group(1)) if matches.group(1) else 0
+            passed -= error
+
+        matches = re.search(r"skipped=([0-9]+)", log)
+        if matches:
+            skipped = int(matches.group(1)) if matches.group(1) else 0
+            passed -= skipped
+
+        matches = re.search(r"unexpected successes=([0-9]+)", log)
+        if matches:
+            unexp_successes = int(matches.group(1)) if matches.group(1) else 0
+            passed -= unexp_successes
 
         matches = re.search(
             r"TOTAL\s+" r"([0-9]+)\s+" r"([0-9]+)\s +" r"([0-9]+%)+", log
@@ -69,9 +90,7 @@ class Nose2Runner(AbstractRunner):
         if matches:
             statements = int(matches.group(1)) if matches.group(1) else 0
             missing = int(matches.group(2)) if matches.group(1) else 0
-            coverage = (
-                float(matches.group(3)[:-1]) if matches.group((3)) else 0.0
-            )
+            coverage = float(matches.group(3)[:-1]) if matches.group(3) else 0.0
 
         result = RunResult(
             statements=statements,
