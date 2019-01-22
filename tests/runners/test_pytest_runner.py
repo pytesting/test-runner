@@ -118,7 +118,9 @@ TOTAL                              39      5    87%
         self.assertEqual(97.0, result.coverage)
 
     def test_get_total_result_fail(self):
-        self.assertEqual(RunResult(), self._dummy_runner.get_run_result(""))
+        self.assertEqual(
+            RunResult(runner="pytest"), self._dummy_runner.get_run_result("")
+        )
 
     def test_get_passed_result(self):
         r = self._dummy_runner.get_run_result(self._output)
