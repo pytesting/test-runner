@@ -198,7 +198,9 @@ TOTAL                              39      5    87%
         self.assertEqual(0.84, r.time)
 
     def test_get_passed_result_fail(self):
-        self.assertEqual(RunResult(), self._dummy_runner.get_run_result(""))
+        self.assertEqual(
+            RunResult(runner="pytest"), self._dummy_runner.get_run_result("")
+        )
 
     def test_integration_pytesting_utils(self):
         repo = self._clone_repo_for_integration("pytesting", "utils")
