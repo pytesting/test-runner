@@ -218,6 +218,7 @@ TOTAL                              39      5    87%
         self.assertGreater(run_result.coverage, 0)
         self._clean_from_integration(repo)
 
+    @unittest.skip("Skip due to long runtime to prevent flaky integration")
     def test_integration_weightedstats(self):
         repo = self._clone_repo_for_integration("tinybike", "weightedstats")
         r = PyTestRunner("weightedstats", repo)
@@ -228,6 +229,7 @@ TOTAL                              39      5    87%
         self.assertGreater(run_result.coverage, 0)
         self._clean_from_integration(repo)
 
+    @unittest.skip("Skip due to long runtime to prevent flaky integration")
     def test_integration_extra_context_py(self):
         repo = self._clone_repo_for_integration("WanzenBug", "extra-context-py")
         r = PyTestRunner("extra-context-py", repo)
@@ -238,6 +240,7 @@ TOTAL                              39      5    87%
         self.assertGreater(run_result.coverage, 0)
         self._clean_from_integration(repo)
 
+    @unittest.skip("Skip due to long runtime to prevent flaky integration")
     def test_integration_hdx_python_utils(self):
         repo = self._clone_repo_for_integration(
             "ocha-dap", "hdx-python-utilities"
