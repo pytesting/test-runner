@@ -19,6 +19,7 @@ class RunResult(object):
     warnings: int = attr.ib(default=-1)
     error: int = attr.ib(default=-1)
     time: float = attr.ib(default=-1.0)
+    runner: str = attr.ib(default="")
 
 
 class AbstractRunner(metaclass=ABCMeta):

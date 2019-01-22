@@ -81,5 +81,6 @@ class NoseRunner(AbstractRunner):
             warnings=warnings,
             error=error,
             time=time,
+            runner="nose",
         )
         return result

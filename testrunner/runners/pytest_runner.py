@@ -139,5 +139,6 @@ class PyTestRunner(AbstractRunner):
             warnings=warnings,
             error=error,
             time=time,
+            runner="pytest",
         )
         return result
