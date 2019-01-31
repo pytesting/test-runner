@@ -15,9 +15,11 @@ class PyTestRunner(AbstractRunner):
         project_name: str,
         path: Union[bytes, str, os.PathLike],
         time_limit: int = 0,
+        junit_xml_file: Union[bytes, str, os.PathLike] = None,
     ) -> None:
         super().__init__(project_name, path)
         self._time_limit = time_limit
+        self._junit_xml_file = junit_xml_file
 
     def run(self) -> Optional[Tuple[str, str]]:
         # TODO make sure nothing goes wrong here
@@ -63,6 +65,8 @@ class PyTestRunner(AbstractRunner):
             command += "pytest --cov={} --cov-report=term-missing".format(
                 project_name
             )
+            if self._junit_xml_file is not None:
+                command += " --junitxml={}".format(self._junit_xml_file)
 
             out, err = env.run_commands([command])
             if os.path.exists(

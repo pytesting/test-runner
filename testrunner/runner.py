@@ -46,6 +46,7 @@ class Runner(object):
         repo_path: Union[bytes, str, os.PathLike],
         runner: RunnerType = RunnerType.AUTO_DETECT,
         time_limit: int = 0,
+        junit_xml_file: Union[bytes, str, os.PathLike] = None,
     ) -> None:
         """
         Creates a new runner for tests.
@@ -54,6 +55,8 @@ class Runner(object):
         :param repo_path: Path to the project's source code
         :param runner: The RunnerType that should be used
         :param time_limit: An optional time limit for the execution (in seconds)
+        :param junit_xml_file: Create an JUnit-like XML file from the runs (
+        only for PyTest)
         """
         Preconditions.check_argument(
             time_limit >= 0, "A specified time limit has to be at least 0!"
@@ -61,6 +64,7 @@ class Runner(object):
         self._project_name = project_name
         self._repo_path = repo_path
         self._time_limit = time_limit
+        self._junit_xml_file = junit_xml_file
         self._grep = local["grep"]
 
         if runner != RunnerType.AUTO_DETECT:
@@ -83,7 +87,10 @@ class Runner(object):
     def _instantiate_runner(self) -> AbstractRunner:
         if self._runner_type == RunnerType.PYTEST:
             runner = PyTestRunner(
-                self._project_name, self._repo_path, self._time_limit
+                self._project_name,
+                self._repo_path,
+                self._time_limit,
+                self._junit_xml_file,
             )
         elif self._runner_type == RunnerType.SETUP_PY:
             runner = SetupPyRunner(
