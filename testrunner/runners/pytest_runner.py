@@ -16,15 +16,17 @@ class PyTestRunner(AbstractRunner):
         path: Union[bytes, str, os.PathLike],
         time_limit: int = 0,
         junit_xml_file: Union[bytes, str, os.PathLike] = None,
+        venv_path: Union[bytes, str, os.PathLike] = None,
     ) -> None:
         super().__init__(project_name, path)
         self._time_limit = time_limit
         self._junit_xml_file = junit_xml_file
+        self._venv_path = venv_path
 
     def run(self) -> Optional[Tuple[str, str]]:
         # TODO make sure nothing goes wrong here
 
-        with virtualenv(self._project_name) as env:
+        with virtualenv(self._project_name, self._venv_path) as env:
             old_dir = os.getcwd()
             os.chdir(self._path)
 
