@@ -29,7 +29,7 @@ EXTRAS = {
         "coverage",
         "pytest",
         "pytest-cov",
-        "GitPythonn",
+        "GitPython",
     ],
     "dev": [
         "flake8",

@@ -19,6 +19,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-VERSION = (0, 5, 0)
+VERSION = (0, 5, 1)
 
 __version__ = ".".join(map(str, VERSION))
