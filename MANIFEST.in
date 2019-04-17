@@ -1,5 +1,5 @@
 # Used by setup.py
-include requirements.txt dev-requirements.txt
+include requirements.txt requirements-dev.txt requirements-test.txt
 
 # Include the README
 include *.md

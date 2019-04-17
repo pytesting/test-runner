@@ -1,45 +1,113 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import io
 import os
-import re
-from setuptools import setup, find_packages
+import sys
+from setuptools import setup, find_packages, Command
+from shutil import rmtree
 
-# Determine version in a more robust way than importing test-runner,
-# cf http://gehrecke.de/2014/02/distributing-a-python-command-line-application/
-with open("testrunner/__init__.py") as f:
-    version = re.search('^__version__[ ]*=[ ]*"(.*)"', f.read(), re.M).group(1)
+NAME = "test-runner"
+DESCRIPTION = "A small test runner library for Python testing"
+URL = "https://github.com/pytesting/test-runner"
+EMAIL = "python-test-runner@googlegroups.com"
+AUTHOR = "Stephan Lukasczyk"
+REQUIRES_PYTHON = ">=3.6.0"
+VERSION = None
 
-# Get the long description from the read-me file
-readme = os.path.join(os.path.abspath(os.path.dirname(__file__)), "README.md")
+REQUIRED = [
+    "virtualenv",
+    "plumbum",
+    "pytesting-utils",
+    "pipfile",
+    "attr",
+    "deprecated",
+    "benchexec",
+]
+
+EXTRAS = {
+    "test": [
+        "coverage",
+        "pytest",
+        "pytest-cov",
+        "GitPythonn",
+    ],
+    "dev": [
+        "flake8",
+        "black",
+        "twine",
+    ]
+}
+
+here = os.path.abspath(os.path.dirname(__file__))
+
 try:
-    import pypandoc
+    with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+        long_description = "\n" + f.read()
+except FileNotFoundError:
+    long_description = DESCRIPTION
 
-    long_description = pypandoc.convert_file(
-        readme, "rst", format="markdown_github-hard_line_breaks"
-    )
-except (IOError, ImportError):
-    with open(readme, "rb") as f:
-        long_description = f.read().decode("utf-8")
+about = {}
+if not VERSION:
+    project_slug = "testrunner"
+    with open(os.path.join(here, project_slug, "__version__.py")) as f:
+        exec(f.read(), about)
+else:
+    about["__version__"] = VERSION
 
-with open("requirements.txt") as f:
-    required_packages = []
-    for line in f.readlines():
-        required_packages.append(line)
 
-with open("dev-requirements.txt") as f:
-    dev_required_packages = required_packages
-    for line in f.readlines():
-        if "requirements.txt" not in line:
-            dev_required_packages.append(line)
+class UploadCommand(Command):
+    """Support setup.py upload."""
+
+    description = "Build and publish the package"
+    user_options = []
+
+    @staticmethod
+    def status(s):
+        """Prints things in bold."""
+        print("\033[1m{0}\033[0m".format(s))
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        try:
+            self.status("Removing previous builds...")
+            rmtree(os.path.join(here, "dist"))
+        except OSError:
+            pass
+
+        self.status("Building Source and Wheel (universal) distribution...")
+        os.system("{0} setup.py sdist bdist_wheel --universal".format(
+            sys.executable))
+
+        self.status("Uploading the package to PyPI via Twine...")
+        os.system("twine upload dist/*")
+
+        self.status("Pushing git tags...")
+        os.system("git tag -s v{0}".format(about["__version__"]))
+        os.system("git push --tags")
+
+        sys.exit()
+
 
 setup(
-    name="test-runner",
-    version=version,
-    author="Stephan Lukasczyk",
-    author_email="python-test-runner@googlegroups.com",
-    description="A small test runner library for Python testing",
+    name=NAME,
+    version=about["__version__"],
+    description=DESCRIPTION,
     long_description=long_description,
-    url="https://github.com/pytesting/test-runner",
+    long_description_content_type="text/markdown",
+    author=AUTHOR,
+    author_email=EMAIL,
+    python_requires=REQUIRES_PYTHON,
+    url=URL,
+    packages=find_packages(exclude=["tests", "*.tests", "tests.*",
+                                    "*.tests.*"]),
+    install_requires=REQUIRED,
+    extras_require=EXTRAS,
+    include_package_data=True,
     license="GNU Lesser General Public License (LGPLv3)",
     keywords="test runner unittest nose pytest",
     classifiers=[
@@ -49,9 +117,6 @@ setup(
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: GNU Lesser General Public License v3 or "
         "later (LGPLv3+)",
-        "Operating System :: MacOS",
-        "Operating System :: MacOS :: MacOS X",
-        "Operating System :: POSIX",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
@@ -64,10 +129,9 @@ setup(
         "Topic :: Software Development :: Testing :: Unit",
         "Topic :: Utilities",
     ],
-    platforms=["Linux", "macOS", "POSIX"],
-    packages=find_packages(),
-    install_requires=required_packages,
-    setup_requires=dev_required_packages,
     test_suite="py.test",
     zip_safe=True,
+    cmdclass={
+        "upload": UploadCommand,
+    },
 )
