@@ -1,3 +1,6 @@
+# Used by setup.py
+include requirements.txt dev-requirements.txt
+
 # Include the README
 include *.md
 
