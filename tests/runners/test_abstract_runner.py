@@ -1,4 +1,22 @@
-# -*- coding: utf-8 -*-
+"""
+Test runner is a library for running unit tests on Python code.
+
+It offers the opinion to automatically detect the correct run settings for
+the tests and gives information about the test results and coverage information.
+
+Test-Runner is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Test-Runner is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
+"""
 import os
 import shutil
 import tempfile
@@ -36,9 +54,7 @@ class AbstractRunnerTest(unittest.TestCase):
         with self.assertRaises(IllegalArgumentException) as context:
             AbstractRunner("", "bar")
         self.assertTrue(isinstance(context.exception, IllegalArgumentException))
-        self.assertTrue(
-            "Project name must not be empty!" in str(context.exception)
-        )
+        self.assertTrue("Project name must not be empty!" in str(context.exception))
 
     @patch.multiple(AbstractRunner, __abstractmethods__=set())
     def test_empty_path(self):
@@ -59,9 +75,8 @@ class AbstractRunnerTest(unittest.TestCase):
     def test_string_representation(self):
         runner = AbstractRunner("foo", self._tmp_dir)
         result = runner.__str__()
-        expected = (
-            "Runner for project foo in path {} (type "
-            "AbstractRunner)".format(self._tmp_dir)
+        expected = "Runner for project foo in path {} (type " "AbstractRunner)".format(
+            self._tmp_dir
         )
         self.assertEqual(expected, result)
 

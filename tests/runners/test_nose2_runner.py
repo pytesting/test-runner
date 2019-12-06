@@ -1,4 +1,22 @@
-# -*- coding: utf-8 -*-
+"""
+Test runner is a library for running unit tests on Python code.
+
+It offers the opinion to automatically detect the correct run settings for
+the tests and gives information about the test results and coverage information.
+
+Test-Runner is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Test-Runner is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
+"""
 import shutil
 import tempfile
 import unittest
@@ -97,17 +115,13 @@ FAILED (errors=2, skipped=3, expected failures=4, unexpected successes=5)
 
     def test_information_missing_skip(self):
         runner = Nose2Runner("test", "test")
-        result = runner.get_run_result(
-            "Ran 10 tests in 42.424s\nOK (skipped=1)"
-        )
+        result = runner.get_run_result("Ran 10 tests in 42.424s\nOK (skipped=1)")
         self.assertEqual(9, result.passed)
         self.assertEqual(1, result.skipped)
 
     def test_information_missing_error(self):
         runner = Nose2Runner("test", "test")
-        result = runner.get_run_result(
-            "Ran 10 tests in 42.424s\nFAILED (errors=1)"
-        )
+        result = runner.get_run_result("Ran 10 tests in 42.424s\nFAILED (errors=1)")
         self.assertEqual(1, result.error)
 
 

@@ -1,4 +1,22 @@
-# -*- coding: utf-8 -*-
+"""
+Test runner is a library for running unit tests on Python code.
+
+It offers the opinion to automatically detect the correct run settings for
+the tests and gives information about the test results and coverage information.
+
+Test-Runner is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Test-Runner is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
+"""
 import os
 import shutil
 import tempfile
@@ -34,10 +52,7 @@ class PyTestRunnerTest(unittest.TestCase):
         url = "https://github.com/audreyr/standardjson"
         self._repo = Repo.clone_from(url, self._tmp_dir)
         self._runner = PyTestRunner(
-            "standardjson",
-            self._tmp_dir,
-            time_limit=42,
-            junit_xml_file="/dev/null",
+            "standardjson", self._tmp_dir, time_limit=42, junit_xml_file="/dev/null",
         )
         self._dummy_runner = PyTestRunner("test", "test")
         self._output = """
@@ -251,9 +266,7 @@ TOTAL                              39      5    87%
 
     @unittest.skip("Skip due to long runtime to prevent flaky integration")
     def test_integration_hdx_python_utils(self):
-        repo = self._clone_repo_for_integration(
-            "ocha-dap", "hdx-python-utilities"
-        )
+        repo = self._clone_repo_for_integration("ocha-dap", "hdx-python-utilities")
         r = PyTestRunner("hdx-python-utilities", repo)
         result, _ = r.run()
         run_result = r.get_run_result(result)

@@ -1,21 +1,36 @@
-# -*- coding: utf-8 -*-
-import os
-from typing import Union, Optional, Tuple
+"""
+Test runner is a library for running unit tests on Python code.
 
-from pytesting_utils import virtualenv
+It offers the opinion to automatically detect the correct run settings for
+the tests and gives information about the test results and coverage information.
+
+Test-Runner is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Test-Runner is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
+"""
+import os
+from typing import Optional, Tuple
+
+from pytesting_utils import virtualenv  # type: ignore
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 
 
 class SetupPyRunner(AbstractRunner):
-    def __init__(
-        self,
-        project_name: str,
-        path: Union[bytes, str, os.PathLike],
-        time_limit: int = 0,
-    ) -> None:
+    """Implements a runner for setup.py"""
+
+    def __init__(self, project_name: str, path: str, time_limit: int = 0,) -> None:
         super().__init__(project_name, path)
-        self._time_limit = 0
+        self._time_limit = time_limit
 
     def run(self) -> Optional[Tuple[str, str]]:
         setup_py = os.path.join(self._path, "setup.py")
@@ -38,8 +53,8 @@ class SetupPyRunner(AbstractRunner):
             if os.path.exists(
                 os.path.join(os.getcwd(), "output.log")
             ) and os.path.isfile(os.path.join(os.getcwd(), "output.log")):
-                with open(os.path.join(os.getcwd(), "output.log")) as f:
-                    out += "\n".join(f.readlines())
+                with open(os.path.join(os.getcwd(), "output.log")) as out_file:
+                    out += "\n".join(out_file.readlines())
 
             os.chdir(old_dir)
             return out, err

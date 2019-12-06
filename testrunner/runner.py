@@ -1,10 +1,28 @@
-# -*- coding: utf-8 -*-
+"""
+Test runner is a library for running unit tests on Python code.
+
+It offers the opinion to automatically detect the correct run settings for
+the tests and gives information about the test results and coverage information.
+
+Test-Runner is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Test-Runner is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
+"""
 import os
 from enum import Enum, auto
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional
 
-from plumbum import local
-from pytesting_utils import IllegalStateException, Preconditions
+from plumbum import local  # type: ignore
+from pytesting_utils import IllegalStateException, Preconditions  # type: ignore
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 from testrunner.runners.nose2_runner import Nose2Runner
@@ -35,7 +53,8 @@ class RunnerType(Enum):
     _UNKNOWN = auto()
 
 
-class Runner(object):
+# pylint: disable=too-many-instance-attributes,too-many-arguments
+class Runner:
     """
     The runner
     """
@@ -43,10 +62,10 @@ class Runner(object):
     def __init__(
         self,
         project_name: str,
-        repo_path: Union[bytes, str, os.PathLike],
+        repo_path: str,
         runner: RunnerType = RunnerType.AUTO_DETECT,
         time_limit: int = 0,
-        junit_xml_file: Union[bytes, str, os.PathLike] = None,
+        junit_xml_file: str = None,
         venv_path: Union[bytes, str, os.PathLike] = None,
     ) -> None:
         """
@@ -80,15 +99,17 @@ class Runner(object):
     def _detect_runner_type(self) -> RunnerType:
         if self._is_pytest():
             return RunnerType.PYTEST
-        elif self._is_nose2():
+        if self._is_nose2():
             return RunnerType.NOSE2
-        elif self._is_nose():
+        if self._is_nose():
             return RunnerType.NOSE
-        elif self._is_setup_py():
+        if self._is_setup_py():
             return RunnerType.SETUP_PY
+        # pylint: disable=protected-access
         return RunnerType._UNKNOWN  # pragma: no cover
 
     def _instantiate_runner(self) -> AbstractRunner:
+        runner: AbstractRunner
         if self._runner_type == RunnerType.PYTEST:
             runner = PyTestRunner(
                 self._project_name,
@@ -102,21 +123,18 @@ class Runner(object):
                 self._project_name, self._repo_path, self._time_limit
             )
         elif self._runner_type == RunnerType.NOSE:
-            runner = NoseRunner(
-                self._project_name, self._repo_path, self._time_limit
-            )
+            runner = NoseRunner(self._project_name, self._repo_path, self._time_limit)
         elif self._runner_type == RunnerType.NOSE2:
-            runner = Nose2Runner(
-                self._project_name, self._repo_path, self._time_limit
-            )
+            runner = Nose2Runner(self._project_name, self._repo_path, self._time_limit)
         else:
             raise IllegalStateException("Could not find a matching runner!")
         return runner
 
+    # pylint: disable=invalid-name,too-many-return-statements
     def _is_pytest(self) -> bool:
-        if os.path.exists(
+        if os.path.exists(os.path.join(self._repo_path, "setup.py")) and os.path.isfile(
             os.path.join(self._repo_path, "setup.py")
-        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
+        ):
             _, r, _ = self._grep[
                 "test_suite=pytest", os.path.join(self._repo_path, "setup.py")
             ].run(retcode=None)
@@ -134,9 +152,7 @@ class Runner(object):
         ) and os.path.isfile(os.path.join(self._repo_path, "pytest.ini")):
             return True
 
-        _, r, _ = self._grep["-R", "import pytest", self._repo_path].run(
-            retcode=None
-        )
+        _, r, _ = self._grep["-R", "import pytest", self._repo_path].run(retcode=None)
         if len(r) > 0:
             return True
 
@@ -153,9 +169,9 @@ class Runner(object):
         return False
 
     def _is_nose2(self) -> bool:
-        if os.path.exists(
+        if os.path.exists(os.path.join(self._repo_path, "setup.py")) and os.path.isfile(
             os.path.join(self._repo_path, "setup.py")
-        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
+        ):
             _, r, _ = self._grep[
                 "nose2", os.path.join(self._repo_path, "setup.py")
             ].run(retcode=None)
@@ -164,20 +180,20 @@ class Runner(object):
         return False
 
     def _is_nose(self) -> bool:
-        if os.path.exists(
+        if os.path.exists(os.path.join(self._repo_path, "setup.py")) and os.path.isfile(
             os.path.join(self._repo_path, "setup.py")
-        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
-            _, r, _ = self._grep[
-                "nose", os.path.join(self._repo_path, "setup.py")
-            ].run(retcode=None)
+        ):
+            _, r, _ = self._grep["nose", os.path.join(self._repo_path, "setup.py")].run(
+                retcode=None
+            )
             if len(r) > 0:
                 return True
         return False
 
     def _is_setup_py(self) -> bool:
-        if os.path.exists(
+        if os.path.exists(os.path.join(self._repo_path, "setup.py")) and os.path.isfile(
             os.path.join(self._repo_path, "setup.py")
-        ) and os.path.isfile(os.path.join(self._repo_path, "setup.py")):
+        ):
             _, r, _ = self._grep[
                 "test_suite=", os.path.join(self._repo_path, "setup.py")
             ].run(retcode=None)
@@ -186,7 +202,7 @@ class Runner(object):
 
         return False
 
-    def run(self) -> Tuple[str, str]:
+    def run(self) -> Optional[Tuple[str, str]]:
         """
         Run the test runner for the project
 

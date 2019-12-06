@@ -1,5 +1,0 @@
-coverage
-pytest
-pytest-cov
-GitPython
--r ./requirements.txt

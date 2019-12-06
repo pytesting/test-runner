@@ -6,18 +6,23 @@ matrix:
   include:
     - python: 3.6
     - python: 3.7
-      #- python: "3.8-dev"
+    - python: 3.8
 install:
-  - pip install -r requirements-dev.txt
+  - pip install poetry
+  - poetry install
+  - poetry add codecov
 before_script:
-  - if [[ $TRAVIS_PYTHON_VERSION != "3.8-dev" ]]; then flake8 .; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != "3.8" ]]; then poetry run flake8 .; fi
 script:
-  - py.test --cov=testrunner tests/
+  - poetry run pylint testrunner
+  - poetry run mypy testrunner
+  - poetry run black --check .
+  - poetry run py.test --cov=testrunner tests/
 after_success:
-  - coverage combine
-  - coverage report
-  - coverage xml
-  - if [ ! -z "$CODECOV_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then codecov; fi
+  - poetry run coverage combine
+  - poetry run coverage report
+  - poetry run coverage xml
+  - if [ ! -z "$CODECOV_TOKEN" ] && [ "$TRAVIS_PYTHON_VERSION" == "3.6" ] && [ "$TRAVIS_BRANCH" == "master" ]; then poetry run codecov; fi
 notifications:
   email:
     - python-test-runner@googlegroups.com

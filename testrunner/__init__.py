@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Test runner is a library for running unit tests on Python code.
 
