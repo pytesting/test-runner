@@ -77,12 +77,12 @@ class PyTestRunner(AbstractRunner):
             env.add_packages_for_installation(packages)
             env.add_package_for_installation("pytest")
             env.add_package_for_installation("pytest-cov")
-            env.add_package_for_installation("benchexec")
+            env.add_package_for_installation("benchexec==1.22")
 
             if self._time_limit > 0:
-                command = "runexec --timelimit={}s -- ".format(self._time_limit)
+                command = "runexec --no-container --timelimit={}s -- ".format(self._time_limit)
             else:
-                command = "runexec -- "
+                command = "runexec --no-container -- "
             command += "pytest --cov={} --cov-report=term-missing".format(project_name)
             if self._junit_xml_file is not None:
                 command += " --junitxml={}".format(self._junit_xml_file)
