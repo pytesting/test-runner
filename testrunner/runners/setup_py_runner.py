@@ -42,7 +42,7 @@ class SetupPyRunner(AbstractRunner):
             os.chdir(self._path)
             packages = self._extract_necessary_packages()
             env.add_packages_for_installation(packages)
-            env.add_packages_for_installation("benchexec")
+            env.add_package_for_installation("benchexec")
 
             if self._time_limit > 0:
                 command = "runexec --timelimit={}s -- ".format(self._time_limit)
