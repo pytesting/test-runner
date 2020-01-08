@@ -21,7 +21,7 @@ import os
 import re
 from typing import Union, Optional, Tuple
 
-from pytesting_utils import virtualenv  # type: ignore
+from pytesting_utils import virtualenv
 from setuptools import find_packages  # type: ignore
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult

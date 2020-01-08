@@ -23,7 +23,7 @@ from typing import List, Optional, Tuple
 
 import attr
 import pipfile  # type: ignore
-from pytesting_utils import Preconditions  # type: ignore
+from pytesting_utils import Preconditions
 
 
 # pylint: disable=too-many-instance-attributes,too-few-public-methods

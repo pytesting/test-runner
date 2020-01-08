@@ -22,7 +22,7 @@ from enum import Enum, auto
 from typing import Union, Tuple, Optional
 
 from plumbum import local  # type: ignore
-from pytesting_utils import IllegalStateException, Preconditions  # type: ignore
+from pytesting_utils import IllegalStateException, Preconditions
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 from testrunner.runners.nose2_runner import Nose2Runner

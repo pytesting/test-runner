@@ -20,7 +20,7 @@ along with Test-Runner.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from typing import Optional, Tuple
 
-from pytesting_utils import virtualenv  # type: ignore
+from pytesting_utils import virtualenv
 
 from testrunner.runners.abstract_runner import AbstractRunner, RunResult
 
