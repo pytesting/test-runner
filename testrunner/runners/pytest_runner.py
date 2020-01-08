@@ -80,7 +80,9 @@ class PyTestRunner(AbstractRunner):
             env.add_package_for_installation("benchexec==1.22")
 
             if self._time_limit > 0:
-                command = "runexec --no-container --timelimit={}s -- ".format(self._time_limit)
+                command = "runexec --no-container --timelimit={}s -- ".format(
+                    self._time_limit
+                )
             else:
                 command = "runexec --no-container -- "
             command += "pytest --cov={} --cov-report=term-missing".format(project_name)

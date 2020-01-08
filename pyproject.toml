@@ -34,7 +34,7 @@ packages = [
 python = "^3.6"
 virtualenv = "^16.7"
 plumbum = "^1.6"
-pytesting-utils = "^0.4.1"
+pytesting-utils = "^0.5.0"
 pipfile = "^0.0.2"
 attr = "^0.3.1"
 deprecated = "^1.2"
@@ -42,12 +42,12 @@ benchexec = "^2.5"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7"
-black = {version = "^19.10b0", allows-prereleases = true}
-coverage = "^4.5"
+black = {version = "^19.10b0", allow-prereleases = true}
+coverage = "^5.0"
 pytest = "^5.3"
 pytest-cov = "^2.8"
 pylint = "^2.4"
-mypy = "^0.750.0"
+mypy = "^0.761"
 GitPython = "^3.0"
 pytest-sugar = "^0.9.2"
 
